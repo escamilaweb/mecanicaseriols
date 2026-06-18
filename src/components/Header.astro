@@ -1,0 +1,94 @@
+---
+import { navLinks, site } from '../data/site';
+
+const base = import.meta.env.BASE_URL;
+
+function navHref(href: string) {
+  if (href === '/') return base;
+  return `${base}${href.slice(1)}/`;
+}
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const basePath = base.replace(/\/$/, '') || '';
+const currentPath = pathname === basePath ? '/' : pathname.replace(basePath, '') || '/';
+---
+
+<header class="header">
+  <div class="container header-inner">
+    <a href={base} class="logo">{site.name}</a>
+    <nav aria-label="Navegación principal">
+      <ul class="nav-list">
+        {
+          navLinks.map(({ href, label }) => (
+            <li>
+              <a
+                href={navHref(href)}
+                class:list={['nav-link', { active: currentPath === href || (href !== '/' && currentPath.startsWith(href)) }]}
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(15, 17, 20, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1rem;
+    gap: 1rem;
+  }
+
+  .logo {
+    font-weight: 800;
+    font-size: 1.125rem;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .logo:hover {
+    color: var(--color-primary);
+  }
+
+  .nav-list {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 0.5rem 0.875rem;
+    border-radius: var(--radius);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--color-text);
+    background: var(--color-surface);
+  }
+
+  .nav-link.active {
+    color: var(--color-primary);
+  }
+</style>

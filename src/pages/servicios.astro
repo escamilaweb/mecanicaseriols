@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import { services } from '../data/site';
+---
+
+<BaseLayout title="Servicios" description="Servicios de mecánica, mantenimiento, diagnóstico y pre-ITV en Mecánica Seriols.">
+  <section class="section page-header">
+    <div class="container">
+      <h1 class="section-title">Servicios</h1>
+      <p class="section-subtitle">
+        Trabajamos con todas las marcas y modelos. Pide presupuesto sin compromiso.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-2">
+        {services.map((service) => <ServiceCard {...service} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-bottom: 0;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-alt);
+  }
+</style>

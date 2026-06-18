@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import { services, site } from '../data/site';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="container hero-inner">
+      <p class="hero-tag">Taller mecánico profesional</p>
+      <h1>Tu vehículo en las mejores manos</h1>
+      <p class="hero-text">
+        En {site.name} ofrecemos servicio de calidad, transparencia y atención personalizada
+        para mantener tu coche en perfecto estado.
+      </p>
+      <div class="hero-actions">
+        <a href={`${base}contacto/`} class="btn btn-primary">Solicitar cita</a>
+        <a href={`${base}servicios/`} class="btn btn-outline">Ver servicios</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Nuestros servicios</h2>
+      <p class="section-subtitle">
+        Soluciones completas para el cuidado y reparación de tu vehículo.
+      </p>
+      <div class="grid grid-2 grid-4">
+        {services.map((service) => <ServiceCard {...service} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta">
+    <div class="container cta-inner">
+      <div>
+        <h2 class="section-title">¿Necesitas ayuda con tu vehículo?</h2>
+        <p class="section-subtitle">Llámanos o escríbenos. Te atenderemos lo antes posible.</p>
+      </div>
+      <a href={`tel:${site.phone.replace(/\s/g, '')}`} class="btn btn-primary">{site.phone}</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: 6rem 5rem;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -20%, rgba(196, 30, 30, 0.25), transparent),
+      var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: 42rem;
+  }
+
+  .hero-tag {
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 1rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.25rem, 6vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 1.25rem;
+    letter-spacing: -0.03em;
+  }
+
+  .hero-text {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+    margin: 0 0 2rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .cta {
+    background: var(--color-bg-alt);
+    border-block: 1px solid var(--color-border);
+  }
+
+  .cta-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  @media (min-width: 768px) {
+    .cta-inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cta .section-subtitle {
+      margin-bottom: 0;
+    }
+  }
+</style>
