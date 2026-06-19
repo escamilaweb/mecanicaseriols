@@ -12,6 +12,7 @@
     "pages:dev": "wrangler pages dev dist --compatibility-date=2024-09-23 --compatibility-flags=nodejs_compat",
     "astro": "astro",
     "images:optimize": "node scripts/optimize-webp.mjs",
+    "images:optimize:py": "python scripts/optimize_webp.py",
     "images:webp": "node scripts/convert-webp.mjs"
   },
   "dependencies": {
