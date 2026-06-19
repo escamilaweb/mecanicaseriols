@@ -1,4 +1,3 @@
-# Variables locales para `astro dev` / `wrangler dev` (no commitear secretos reales)
 RESEND_API_KEY=re_xxxxxxxx
-RESEND_FROM_EMAIL=onboarding@resend.dev
+RESEND_FROM_EMAIL=agenda@mecanicaseriols.com
 RESEND_TO_EMAIL=agenda@mecanicaseriols.com

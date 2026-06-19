@@ -1,14 +1,23 @@
 import sharp from 'sharp';
 import { readdir, unlink } from 'node:fs/promises';
 import { join, parse } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = new URL('../public/images', import.meta.url).pathname.replace(/^\/([A-Z]:)/, '$1');
+const publicRoot = fileURLToPath(new URL('../public', import.meta.url));
+const imagesRoot = join(publicRoot, 'images');
 const RASTER_EXT = new Set(['.jpg', '.jpeg', '.png']);
+const SVG_TO_WEBP = new Set([
+  'flag-checkered-red.svg',
+  'flag-checkered.svg',
+  'Seriols-logo.svg',
+]);
 
 function outputWidth(inputPath) {
   if (inputPath.includes('hero')) return 1920;
   if (inputPath.includes('gallery')) return 1200;
   if (inputPath.includes('clients')) return 280;
+  if (inputPath.includes('flag-checkered')) return 400;
+  if (inputPath.includes('Seriols-logo')) return 360;
   return 1920;
 }
 
@@ -42,18 +51,35 @@ async function toWebp(inputPath) {
   console.log('✓', outputPath);
 }
 
-const sources = await walk(root);
+async function svgToWebp(inputPath) {
+  const { dir, name } = parse(inputPath);
+  const outputPath = join(dir, `${name}.webp`);
 
-if (sources.length === 0) {
-  console.log('No raster images to convert.');
-} else {
-  for (const inputPath of sources) {
-    try {
-      await toWebp(inputPath);
-    } catch (err) {
-      console.warn('Skip', inputPath, err.message);
-    }
+  await sharp(inputPath)
+    .resize({ width: outputWidth(inputPath), withoutEnlargement: true })
+    .webp({ quality: 90 })
+    .toFile(outputPath);
+
+  console.log('✓', outputPath);
+}
+
+const rasterSources = await walk(imagesRoot);
+
+for (const inputPath of rasterSources) {
+  try {
+    await toWebp(inputPath);
+  } catch (err) {
+    console.warn('Skip', inputPath, err.message);
   }
 }
 
-console.log(`Done. Converted ${sources.length} file(s).`);
+for (const fileName of SVG_TO_WEBP) {
+  const inputPath = join(imagesRoot, fileName);
+  try {
+    await svgToWebp(inputPath);
+  } catch (err) {
+    console.warn('Skip', inputPath, err.message);
+  }
+}
+
+console.log(`Done. Converted ${rasterSources.length} raster file(s) and ${SVG_TO_WEBP.size} SVG(s).`);
