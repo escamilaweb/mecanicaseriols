@@ -10,9 +10,9 @@ const errorClass = 'hidden text-xs font-medium text-seriols-red';
 const apiUrl = `${import.meta.env.BASE_URL}api/contact/`;
 
 const fields = [
-  { name: 'name', label: 'Nombre', type: 'text', autocomplete: 'name', placeholder: 'Tu nombre', cols: 2 },
-  { name: 'phone', label: 'Teléfono', type: 'tel', autocomplete: 'tel', placeholder: '55 1234 5678', cols: 2 },
-  { name: 'email', label: 'Email', type: 'email', autocomplete: 'email', placeholder: 'tu@email.com', cols: 2 },
+  { name: 'name', label: 'Nombre', type: 'text', autocomplete: 'name', placeholder: 'Tu nombre', cols: 2, maxLength: 120 },
+  { name: 'phone', label: 'Teléfono', type: 'tel', autocomplete: 'tel', placeholder: '55 1234 5678', cols: 2, maxLength: 30 },
+  { name: 'email', label: 'Email', type: 'email', autocomplete: 'email', placeholder: 'tu@email.com', cols: 2, maxLength: 254 },
   {
     name: 'carBrand',
     label: 'Marca de tu auto',
@@ -20,6 +20,7 @@ const fields = [
     autocomplete: 'off',
     placeholder: 'Ej. Toyota, Nissan…',
     cols: 2,
+    maxLength: 80,
   },
   {
     name: 'message',
@@ -28,6 +29,7 @@ const fields = [
     autocomplete: 'off',
     placeholder: '¿En qué podemos ayudarte?',
     cols: 1,
+    maxLength: 4000,
   },
 ] as const;
 ---
@@ -50,6 +52,7 @@ const fields = [
               type={field.type}
               name={field.name}
               required
+              maxlength={field.maxLength}
               autocomplete={field.autocomplete}
               placeholder={field.placeholder}
               class={fieldClass}
@@ -78,6 +81,7 @@ const fields = [
             name={field.name}
             rows="4"
             required
+            maxlength={field.maxLength}
             placeholder={field.placeholder}
             class={fieldClass}
             data-input={field.name}

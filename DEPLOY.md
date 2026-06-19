@@ -48,8 +48,16 @@ functions/api/contact.ts  ← POST /api/contact/ (Resend)
 ## PageSpeed / Lighthouse
 
 - `_headers` en `public/` → cache largo para `/_astro/*` e `/images/*`
-- Preload de `hero.webp` en la home (LCP)
-- Fuentes Google con carga diferida (`media="print"` + `onload`)
+- Hero responsive (`hero-800.webp`, `hero-1280.webp`) + preload con `imagesrcset`
+- Imágenes WebP: `npm run images:optimize:py`
+- **Cloudflare → Scrape Shield:** desactiva *Email Address Obfuscation* si PageSpeed marca `email-decode.min.js` (el sitio ya usa `mailto:` explícitos)
+- **Web Analytics / Browser Insights:** el beacon de Cloudflare tiene TTL corto; es normal en el informe de caché
+
+## Seguridad (formulario de contacto)
+
+- `RESEND_API_KEY` solo en Cloudflare Secrets — nunca en el cliente ni en el repo
+- Validación y límites de longitud en `functions/lib/contact-validation.ts`
+- Escape HTML en el correo saliente; errores genéricos al usuario (sin filtrar respuestas de Resend)
 
 ## Nota sobre el 404
 

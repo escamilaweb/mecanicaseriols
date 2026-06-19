@@ -19,10 +19,10 @@ IMAGES = ROOT / "public" / "images"
 
 def settings(path: Path) -> tuple[int, int]:
     s = str(path).replace("\\", "/").lower()
-    if "hero" in s:
-        return 1600, 72
+    if path.name == "hero.webp":
+        return 1280, 65
     if "gallery" in s:
-        return 960, 68
+        return 720, 62
     if any(x in s for x in ("clients", "flag-checkered", "seriols-logo")):
         return 280, 78
     return 1400, 72
@@ -62,6 +62,32 @@ def optimize(path: Path) -> int:
     return saved
 
 
+def write_hero_variants() -> int:
+    hero = IMAGES / "hero.webp"
+    if not hero.exists():
+        return 0
+
+    saved = 0
+    with Image.open(hero) as source:
+        for width, quality, name in ((800, 64, "hero-800.webp"), (1280, 66, "hero-1280.webp")):
+            output = IMAGES / name
+            before = output.stat().st_size if output.exists() else 0
+            img = source.convert("RGB")
+            w, h = img.size
+            if w > width:
+                new_h = round(h * width / w)
+                img = img.resize((width, new_h), Image.Resampling.LANCZOS)
+            temp = output.with_suffix(".webp.opt")
+            img.save(temp, "WEBP", quality=quality, method=6, optimize=True)
+            os.replace(temp, output)
+            after = output.stat().st_size
+            if after < before or before == 0:
+                delta = max(0, before - after) if before else 0
+                saved += delta
+                print(f"OK {output.relative_to(ROOT)} ({after // 1024} KiB)")
+    return saved
+
+
 def main() -> int:
     files = sorted(IMAGES.rglob("*.webp"))
     if not files:
@@ -71,6 +97,8 @@ def main() -> int:
     total = 0
     skipped = 0
     for path in files:
+        if path.name.startswith("hero-"):
+            continue
         if path.suffix == ".opt" or path.name.endswith(".webp.opt"):
             continue
         try:
@@ -87,6 +115,10 @@ def main() -> int:
         print(f" {skipped} omitidos (archivo bloqueado).")
     else:
         print()
+
+    variant_saved = write_hero_variants()
+    if variant_saved:
+        print(f"Variantes hero: ~{variant_saved // 1024} KiB adicionales.")
     return 0
 
 

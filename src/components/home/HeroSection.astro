@@ -4,6 +4,8 @@ import { home } from '../../data/home';
 
 const base = import.meta.env.BASE_URL;
 const { hero } = home;
+const heroSrc = `${base}images/hero.webp`;
+const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.webp 1280w, ${heroSrc} 1600w`;
 ---
 
 <section
@@ -13,12 +15,13 @@ const { hero } = home;
   <div class="absolute inset-0 overflow-hidden">
     <img
       id="hero-bg-image"
-      src={`${base}images/hero.webp`}
+      src={heroSrc}
+      srcset={heroSrcSet}
       alt={hero.imageAlt}
       class="hero-parallax-img"
       fetchpriority="high"
-      width="1600"
-      height="900"
+      width="1280"
+      height="720"
       sizes="100vw"
       decoding="async"
     />

@@ -1,25 +1,4 @@
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-/** @param {string} value */
-function escapeHtml(value) {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-/** @param {Record<string, unknown>} body */
-function parseForm(body) {
-  return {
-    name: String(body.name ?? '').trim(),
-    phone: String(body.phone ?? '').trim(),
-    email: String(body.email ?? '').trim(),
-    carBrand: String(body.carBrand ?? '').trim(),
-    message: String(body.message ?? '').trim(),
-  };
-}
+import { escapeHtml, parseContactForm, validateContactForm } from '../lib/contact-validation.ts';
 
 /** @param {Record<string, string>} data */
 function buildContactEmailHtml(data) {
@@ -95,6 +74,10 @@ function buildContactEmailHtml(data) {
 
 /** @type {import('@cloudflare/workers-types').PagesFunction} */
 export const onRequestPost = async (context) => {
+  if (context.request.method !== 'POST') {
+    return Response.json({ error: 'Método no permitido.' }, { status: 405 });
+  }
+
   const contentType = context.request.headers.get('content-type') ?? '';
   if (!contentType.includes('application/json')) {
     return Response.json({ error: 'Solicitud inválida.' }, { status: 415 });
@@ -107,16 +90,18 @@ export const onRequestPost = async (context) => {
     return Response.json({ error: 'No se pudo leer el formulario.' }, { status: 400 });
   }
 
-  const { name, phone, email, carBrand, message } = parseForm(body);
-
-  if (!name || !phone || !email || !carBrand || !message) {
-    return Response.json({ error: 'Completa todos los campos obligatorios.' }, { status: 400 });
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return Response.json({ error: 'Solicitud inválida.' }, { status: 400 });
   }
 
-  if (!emailPattern.test(email)) {
-    return Response.json({ error: 'El email no es válido.' }, { status: 400 });
+  const payload = parseContactForm(body);
+  const validation = validateContactForm(payload);
+
+  if (!validation.ok) {
+    return Response.json({ error: validation.error }, { status: 400 });
   }
 
+  const { name, phone, email, carBrand, message } = payload;
   const apiKey = context.env.RESEND_API_KEY;
   const from = context.env.RESEND_FROM_EMAIL;
   const to = context.env.RESEND_TO_EMAIL;
@@ -130,7 +115,6 @@ export const onRequestPost = async (context) => {
 
   const subject = `Nuevo contacto web — ${name}`;
   const html = buildContactEmailHtml({ name, phone, email, carBrand, message });
-
   const text = [
     'Nuevo mensaje desde mecanicaseriols.com',
     '',
@@ -160,7 +144,7 @@ export const onRequestPost = async (context) => {
   });
 
   if (!resendResponse.ok) {
-    console.error('Resend error:', await resendResponse.text());
+    console.error('Resend error status:', resendResponse.status);
     return Response.json({ error: 'No se pudo enviar el mensaje. Intenta más tarde.' }, { status: 502 });
   }
 

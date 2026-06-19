@@ -21,7 +21,9 @@ const base = import.meta.env.BASE_URL;
     slot="head"
     rel="preload"
     as="image"
-    href={`${base}images/hero.webp`}
+    href={`${base}images/hero-1280.webp`}
+    imagesrcset={`${base}images/hero-800.webp 800w, ${base}images/hero-1280.webp 1280w, ${base}images/hero.webp 1600w`}
+    imagesizes="100vw"
     fetchpriority="high"
   />
   <HeroSection />
