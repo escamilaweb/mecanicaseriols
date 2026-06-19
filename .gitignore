@@ -1,5 +1,8 @@
 # build output
 dist/
+
+# image optimization temp files
+*.webp.tmp
 static-output/
 .vercel/
 .wrangler/

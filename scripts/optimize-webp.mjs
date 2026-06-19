@@ -1,6 +1,8 @@
 import sharp from 'sharp';
-import { readdir, stat } from 'node:fs/promises';
+import { readdir, stat, writeFile, copyFile, unlink } from 'node:fs/promises';
 import { join, parse } from 'node:path';
+import { tmpdir } from 'node:os';
+import { randomBytes } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const imagesRoot = fileURLToPath(new URL('../public/images', import.meta.url));
@@ -47,26 +49,29 @@ async function optimizeWebp(inputPath) {
 
   if (buffer.length >= before) {
     console.log('·', inputPath, '(sin cambio)');
-    return;
+    return 0;
   }
 
-  const tempPath = `${inputPath}.tmp`;
-  await sharp(buffer).toFile(tempPath);
-  const { rename, unlink } = await import('node:fs/promises');
-  await unlink(inputPath);
-  await rename(tempPath, inputPath);
-  const saved = before - buffer.length;
-  console.log('✓', inputPath, `-${Math.round(saved / 1024)} KiB`);
+  const tempPath = join(tmpdir(), `webp-${randomBytes(8).toString('hex')}.webp`);
+  try {
+    await writeFile(tempPath, buffer);
+    await copyFile(tempPath, inputPath);
+    const saved = before - buffer.length;
+    console.log('✓', inputPath, `-${Math.round(saved / 1024)} KiB`);
+    return saved;
+  } catch (error) {
+    console.warn('⚠', inputPath, `(omitido: ${error.code ?? error.message})`);
+    return 0;
+  } finally {
+    await unlink(tempPath).catch(() => {});
+  }
 }
 
 const files = await walk(imagesRoot);
 let totalSaved = 0;
 
 for (const file of files) {
-  const before = (await stat(file)).size;
-  await optimizeWebp(file);
-  const after = (await stat(file)).size;
-  totalSaved += Math.max(0, before - after);
+  totalSaved += await optimizeWebp(file);
 }
 
 console.log(`Optimized ${files.length} WebP file(s). Saved ~${Math.round(totalSaved / 1024)} KiB.`);
