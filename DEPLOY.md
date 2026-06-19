@@ -1,86 +1,60 @@
-# Despliegue en producción — Mecánica Seriols
+# Despliegue — Cloudflare Workers & Pages
 
 Repositorio: [github.com/escamilaweb/mecanicaseriols](https://github.com/escamilaweb/mecanicaseriols)
 
-## Producción
+Producción: **Cloudflare Workers** (con assets estáticos en `dist/`).  
+El adaptador `@astrojs/cloudflare` genera assets en `dist/client/` y el Worker en `dist/server/` (configurado en `wrangler.toml`).
 
-| Item | Valor |
-| --- | --- |
-| Dominio | `https://mecanicaseriols.com` |
-| Rama | `main` |
-| Node.js | `>= 22.12.0` |
+## Cloudflare (GitHub → Workers)
 
-### Cloudflare Pages
+1. En [Cloudflare Dashboard](https://dash.cloudflare.com) → **Workers & Pages** → **Create** → **Connect to Git**.
+2. Repositorio: `escamilaweb/mecanicaseriols`, rama `main`.
+3. Configuración de build:
 
 | Campo | Valor |
 | --- | --- |
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-| Node.js | `22` (`.node-version` incluido) |
+| **Build command** | `npm run build` |
+| **Deploy command** | `npx wrangler deploy` |
+| **Node.js** | `22` (`.node-version` incluido) |
 
-El archivo `wrangler.toml` también define `pages_build_output_dir = "dist"`.
+> Si Cloudflare detecta Astro automáticamente, verifica que el output sea **`dist/`** y que use **Workers** (no el preset antiguo de Pages sin Worker).
 
-## CloudRay
+4. **Dominio custom:** Workers & Pages → tu proyecto → **Custom domains** → `mecanicaseriols.com`.
 
-1. Conecta tu servidor en [CloudRay](https://cloudray.io) (Agent o SSH).
-2. Crea un script basado en [`deploy/cloudray-build.sh`](deploy/cloudray-build.sh).
-3. Define variables Liquid en CloudRay:
-   - `website_dir` → ruta del clone, ej. `/var/www/mecanicaseriols`
-   - `your_domain` → `mecanicaseriols.com`
-   - `caddyfile` → `/etc/caddy/Caddyfile`
-4. Clona el repo una vez en el servidor:
+## Variables de entorno (formulario de contacto)
 
-```bash
-git clone https://github.com/escamilaweb/mecanicaseriols.git /var/www/mecanicaseriols
-```
+Configura en **Settings → Variables and secrets** del Worker:
 
-5. Ejecuta el script desde **Runlog** en CloudRay tras cada actualización en `main`.
+| Variable | Tipo | Descripción |
+| --- | --- | --- |
+| `RESEND_API_KEY` | Secret | API key de [Resend](https://resend.com/api-keys) |
+| `RESEND_FROM_EMAIL` | Text | Remitente verificado (ej. `agenda@mecanicaseriols.com`) |
+| `RESEND_TO_EMAIL` | Text | Bandeja destino (`agenda@mecanicaseriols.com`) |
 
-### Formulario de contacto (importante)
+Localmente, copia `.dev.vars.example` → `.dev.vars` (no se sube a Git).
 
-El build estático sirve HTML/CSS/JS. La ruta `/api/contact/` requiere **Node serverless** (Vercel).
-
-Opciones:
-
-- **Vercel (recomendado para el formulario):** conecta el repo en Vercel, añade las variables de `.env.example` y despliega. El adaptador `@astrojs/vercel` ya está configurado.
-- **Solo CloudRay + Caddy:** el sitio funciona, pero el formulario de contacto no enviará correos hasta configurar un backend aparte.
-
-## Variables de entorno (formulario)
-
-Copia `.env.example` y configura en tu plataforma:
-
-```
-RESEND_API_KEY=re_xxxxxxxx
-RESEND_FROM_EMAIL=agenda@mecanicaseriols.com
-RESEND_TO_EMAIL=agenda@mecanicaseriols.com
-```
-
-## Build manual en el servidor
-
-```bash
-cd /var/www/mecanicaseriols
-git pull origin main
-npm ci
-npm run build
-# Servir el contenido de dist/ con Caddy, Nginx, Cloudflare Pages, etc.
-```
-
-## Desarrollo local
+## Comandos locales
 
 ```bash
 npm install
-npm run dev
+npm run dev      # desarrollo con runtime Cloudflare (workerd)
+npm run build    # genera dist/ + Worker
+npm run preview  # preview local post-build
+npm run deploy   # build + wrangler deploy (requiere wrangler login)
 ```
 
-Abre [http://localhost:4321/](http://localhost:4321/) (sin subcarpeta; `base` es `/`).
+## Estructura del build
 
-Para simular GitHub Pages con subcarpeta:
-
-```bash
-ASTRO_BASE=/mecanicaseriols/ npm run dev
+```
+dist/client/    ← HTML, CSS, JS e imágenes
+dist/server/    ← código del Worker
+wrangler.toml   ← main + assets (directory = ./dist/client)
 ```
 
-## GitHub Pages (opcional)
+La ruta `/api/contact/` corre en el **Worker** (no es estática); el resto de páginas se prerenderizan.
 
-El workflow en `.github/workflows/deploy.yml` quedó en **manual** (`workflow_dispatch`).  
-La producción oficial es `mecanicaseriols.com` vía CloudRay o Vercel.
+## Migración desde Vercel
+
+- Eliminado `@astrojs/vercel` y `scripts/prepare-static.mjs`.
+- Eliminado workflow de GitHub Pages (`.github/workflows/deploy.yml`).
+- Ya no existe carpeta `.vercel/` en el proyecto.

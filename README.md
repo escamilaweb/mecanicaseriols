@@ -1,6 +1,6 @@
 # Mecánica Seriols
 
-Sitio web para el taller **Mecánica Seriols**, desarrollado con [Astro](https://astro.build).
+Sitio web para el taller **Mecánica Seriols**, desarrollado con [Astro](https://astro.build) y desplegado en **Cloudflare Workers**.
 
 Repositorio: [github.com/escamilaweb/mecanicaseriols](https://github.com/escamilaweb/mecanicaseriols)
 
@@ -11,21 +11,14 @@ Producción: [https://mecanicaseriols.com](https://mecanicaseriols.com)
 | Comando | Acción |
 | --- | --- |
 | `npm install` | Instala dependencias |
-| `npm run dev` | Servidor local en `http://localhost:4321/` |
-| `npm run build` | Build de producción → carpeta `dist/` |
-| `npm run build:static` | Alias de `npm run build` |
-| `npm run preview` | Previsualiza la build |
-
-## Desarrollo local
-
-```bash
-npm install
-npm run dev
-```
+| `npm run dev` | Servidor local (`http://localhost:4321/`) |
+| `npm run build` | Build de producción → `dist/` + Worker |
+| `npm run preview` | Preview local post-build |
+| `npm run deploy` | Build + `wrangler deploy` |
 
 ## Despliegue
 
-Ver **[DEPLOY.md](./DEPLOY.md)** para configurar CloudRay, Vercel y variables de entorno del formulario de contacto.
+Ver **[DEPLOY.md](./DEPLOY.md)** para conectar GitHub con Cloudflare Workers/Pages y configurar Resend.
 
 ## Estructura
 
@@ -36,8 +29,7 @@ src/
 ├── layouts/      # BaseLayout
 ├── pages/        # Rutas (/, /contacto/, /api/contact/)
 └── styles/       # Tailwind global
-deploy/           # Script de referencia para CloudRay
-scripts/          # Utilidades (webp, prepare-static)
+wrangler.toml     # Cloudflare Worker + assets
 ```
 
 ## Personalización

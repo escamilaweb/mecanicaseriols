@@ -1,3 +1,11 @@
 name = "mecanicaseriols"
+main = "@astrojs/cloudflare/entrypoints/server"
 compatibility_date = "2024-09-23"
-pages_build_output_dir = "dist"
+compatibility_flags = [ "nodejs_compat" ]
+
+[assets]
+directory = "./dist/client"
+binding = "ASSETS"
+
+[observability]
+enabled = true

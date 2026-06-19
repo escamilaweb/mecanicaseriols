@@ -2,9 +2,13 @@
 dist/
 static-output/
 .vercel/
+.wrangler/
 
 # generated types
 .astro/
+
+# Cloudflare local secrets
+.dev.vars
 
 # dependencies
 node_modules/
