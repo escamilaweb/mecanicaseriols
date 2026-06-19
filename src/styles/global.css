@@ -211,11 +211,11 @@
   opacity: 0;
 }
 
-.contact-success-dialog[open] .contact-success-dialog__panel {
+.contact-success-dialog[open]:not(.is-closing) .contact-success-dialog__panel {
   animation: contact-dialog-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.contact-success-dialog__panel.is-closing {
+.contact-success-dialog[open].is-closing .contact-success-dialog__panel {
   animation: contact-dialog-out 0.28s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
@@ -225,7 +225,7 @@
   opacity: 0;
 }
 
-.contact-success-dialog[open]::backdrop {
+.contact-success-dialog[open]:not(.is-closing)::backdrop {
   animation: contact-backdrop-in 0.42s ease forwards;
 }
 

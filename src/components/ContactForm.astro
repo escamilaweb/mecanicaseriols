@@ -228,21 +228,39 @@ const fields = [
       });
     }
 
+    const CLOSE_ANIMATION_MS = 280;
+
+    const finishClose = () => {
+      if (!(dialog instanceof HTMLDialogElement) || !(dialogPanel instanceof HTMLElement)) return;
+
+      dialog.classList.remove('is-closing');
+      dialogPanel.classList.remove('is-closing');
+      if (dialog.open) dialog.close();
+    };
+
     const closeDialog = () => {
       if (!(dialog instanceof HTMLDialogElement) || !(dialogPanel instanceof HTMLElement)) return;
       if (dialog.classList.contains('is-closing')) return;
 
       dialog.classList.add('is-closing');
       dialogPanel.classList.add('is-closing');
-      dialogPanel.addEventListener(
-        'animationend',
-        () => {
-          dialog.classList.remove('is-closing');
-          dialogPanel.classList.remove('is-closing');
-          dialog.close();
-        },
-        { once: true },
-      );
+
+      let finished = false;
+      const completeClose = () => {
+        if (finished) return;
+        finished = true;
+        finishClose();
+      };
+
+      const onAnimationEnd = (event) => {
+        if (event.target !== dialogPanel) return;
+        if (event.animationName !== 'contact-dialog-out') return;
+        dialogPanel.removeEventListener('animationend', onAnimationEnd);
+        completeClose();
+      };
+
+      dialogPanel.addEventListener('animationend', onAnimationEnd);
+      window.setTimeout(completeClose, CLOSE_ANIMATION_MS + 80);
     };
 
     const openDialog = () => {
@@ -253,7 +271,10 @@ const fields = [
     };
 
     if (dialog instanceof HTMLDialogElement) {
-      document.getElementById('contact-success-close')?.addEventListener('click', closeDialog);
+      document.getElementById('contact-success-close')?.addEventListener('click', (event) => {
+        event.preventDefault();
+        closeDialog();
+      });
       dialog.addEventListener('cancel', (event) => {
         event.preventDefault();
         closeDialog();
