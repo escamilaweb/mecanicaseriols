@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://escamilaweb.github.io/mecanicaseriols/sitemap-index.xml
+Sitemap: https://mecanicaseriols.com/sitemap-index.xml

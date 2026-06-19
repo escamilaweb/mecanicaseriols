@@ -1,16 +1,19 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import WhatsAppBubble from '../components/WhatsAppBubble.astro';
 import { site } from '../data/site';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  headerVariant?: 'hero';
 }
 
-const { title, description = site.description } = Astro.props;
+const { title, description = site.description, headerVariant = 'hero' } = Astro.props;
 const pageTitle = title ? `${title} | ${site.name}` : site.name;
+const base = import.meta.env.BASE_URL;
 ---
 
 <!doctype html>
@@ -20,14 +23,35 @@ const pageTitle = title ? `${title} | ${site.name}` : site.name;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
     <title>{pageTitle}</title>
   </head>
-  <body>
-    <Header />
-    <main>
+  <body class="min-h-screen flex flex-col bg-seriols-light text-body-text">
+    <Header variant={headerVariant} />
+    <main class="flex-1">
       <slot />
     </main>
     <Footer />
+    <WhatsAppBubble />
+    <script>
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.remove('opacity-0', 'translate-y-6');
+            entry.target.classList.add('opacity-100', 'translate-y-0');
+            revealObserver.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => revealObserver.observe(el));
+    </script>
   </body>
 </html>

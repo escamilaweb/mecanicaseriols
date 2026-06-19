@@ -1,0 +1,272 @@
+---
+import { home } from '../../data/home';
+
+const { diagnostics } = home;
+---
+
+<aside
+  class="diagnostic-panel relative w-full max-w-sm overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 shadow-2xl backdrop-blur-xl sm:p-6"
+  aria-label="Panel de diagnóstico en tiempo real"
+  data-rpm-target={diagnostics.rpm.value}
+  data-oil-target={diagnostics.oil.value}
+  data-faults-target={diagnostics.faults.value}
+>
+  <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+    <div class="scan-line absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-seriols-red/40 to-transparent"></div>
+  </div>
+
+  <div class="relative">
+    <div class="mb-5 flex items-center justify-between border-b border-white/10 pb-4">
+      <div class="flex items-center gap-2">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-60"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+        </span>
+        <span class="text-xs font-semibold uppercase tracking-widest text-white/90">
+          Panel de acción rápida
+        </span>
+      </div>
+      <span class="font-mono text-[10px] uppercase tracking-wider text-white/40">Live</span>
+    </div>
+
+    <div class="space-y-4">
+      <!-- RPM -->
+      <div class="metric-row rounded-xl border border-white/5 bg-black/20 p-4 opacity-40 transition-opacity duration-500" data-metric="rpm">
+        <p class="mb-1 font-mono text-[10px] uppercase tracking-widest text-white/50">
+          {diagnostics.rpm.label}
+        </p>
+        <div class="flex items-end justify-between gap-3">
+          <p class="text-3xl font-bold tabular-nums text-white">
+            <span class="metric-value" data-value="0">0</span>
+            <span class="ml-1 text-sm font-medium text-white/50">{diagnostics.rpm.unit}</span>
+          </p>
+          <svg class="metric-graph h-8 w-16 text-seriols-red/30 transition-colors duration-500" viewBox="0 0 64 32" fill="none" aria-hidden="true">
+            <path
+              class="metric-graph-path"
+              d="M0 24 L8 20 L16 22 L24 14 L32 18 L40 10 L48 14 L56 8 L64 12"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Oil pressure -->
+      <div class="metric-row rounded-xl border border-white/5 bg-black/20 p-4 opacity-40 transition-opacity duration-500" data-metric="oil">
+        <p class="mb-1 font-mono text-[10px] uppercase tracking-widest text-white/50">
+          {diagnostics.oil.label}
+        </p>
+        <div class="flex items-end justify-between gap-3">
+          <p class="text-3xl font-bold tabular-nums text-white">
+            <span class="metric-value" data-value="0">0.0</span>
+            <span class="ml-1 text-sm font-medium text-white/50">{diagnostics.oil.unit}</span>
+          </p>
+          <div class="metric-bars flex h-8 items-end gap-0.5 opacity-30 transition-opacity duration-500" aria-hidden="true">
+            {
+              [40, 65, 45, 80, 55, 90, 70].map((h) => (
+                <div class="bar w-1.5 rounded-sm bg-seriols-gray-300/60" style={`height: ${h}%`} />
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- OBD scan description -->
+      <div class="metric-row rounded-xl border border-white/5 bg-black/20 p-4 opacity-40 transition-opacity duration-500" data-metric="scan">
+        <p class="mb-1 font-mono text-[10px] uppercase tracking-widest text-white/50">
+          {diagnostics.scan.label}
+        </p>
+        <div class="flex items-end justify-between gap-3">
+          <p class="text-xl font-bold text-white sm:text-2xl">
+            <span class="metric-text opacity-0 transition-opacity duration-500">{diagnostics.scan.value}</span>
+          </p>
+          <span class="font-mono text-[10px] uppercase text-white/50 opacity-0 transition-opacity duration-500 metric-unit">
+            {diagnostics.scan.unit}
+          </span>
+        </div>
+      </div>
+
+      <!-- Fault codes -->
+      <div class="metric-row rounded-xl border border-white/5 bg-black/20 p-4 opacity-40 transition-opacity duration-500" data-metric="faults">
+        <p class="mb-1 font-mono text-[10px] uppercase tracking-widest text-white/50">
+          {diagnostics.faults.label}
+        </p>
+        <div class="flex items-end justify-between gap-3">
+          <p class="text-3xl font-bold tabular-nums text-green-400">
+            <span class="metric-value" data-value="0">—</span>
+          </p>
+          <span class="font-mono text-[10px] uppercase text-white/50 opacity-0 transition-opacity duration-500 metric-unit">
+            {diagnostics.faults.unit}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+  function easeOutCubic(t: number) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function animateNumber(
+    el: HTMLElement,
+    from: number,
+    to: number,
+    duration: number,
+    decimals = 0,
+  ): Promise<void> {
+    return new Promise((resolve) => {
+      const start = performance.now();
+      const step = (now: number) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const value = from + (to - from) * easeOutCubic(progress);
+        el.textContent = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString();
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          el.textContent = decimals > 0 ? to.toFixed(decimals) : Math.round(to).toString();
+          resolve();
+        }
+      };
+      requestAnimationFrame(step);
+    });
+  }
+
+  function activateRow(row: HTMLElement) {
+    row.classList.remove('opacity-40');
+    row.classList.add('opacity-100');
+  }
+
+  function activateGraph(row: HTMLElement) {
+    const graph = row.querySelector('.metric-graph');
+    graph?.classList.remove('text-seriols-red/30');
+    graph?.classList.add('text-seriols-red/80');
+  }
+
+  function activateBars(row: HTMLElement) {
+    const bars = row.querySelector('.metric-bars');
+    bars?.classList.remove('opacity-30');
+    bars?.classList.add('opacity-100');
+    row.querySelectorAll('.bar').forEach((bar, i) => {
+      (bar as HTMLElement).style.animation = `bar-pulse 1.2s ease-in-out ${i * 0.1}s infinite alternate`;
+    });
+  }
+
+  function revealText(row: HTMLElement) {
+    row.querySelectorAll('.metric-text, .metric-unit').forEach((el) => {
+      el.classList.remove('opacity-0');
+      el.classList.add('opacity-100');
+    });
+  }
+
+  async function runDiagnosticSequence(panel: HTMLElement) {
+    const rpmRow = panel.querySelector('[data-metric="rpm"]') as HTMLElement;
+    const oilRow = panel.querySelector('[data-metric="oil"]') as HTMLElement;
+    const scanRow = panel.querySelector('[data-metric="scan"]') as HTMLElement;
+    const faultsRow = panel.querySelector('[data-metric="faults"]') as HTMLElement;
+
+    const rpmTarget = Number(panel.dataset.rpmTarget);
+    const oilTarget = Number(panel.dataset.oilTarget);
+    const faultsTarget = Number(panel.dataset.faultsTarget);
+
+    const rpmEl = rpmRow?.querySelector('.metric-value') as HTMLElement;
+    const oilEl = oilRow?.querySelector('.metric-value') as HTMLElement;
+    const faultsEl = faultsRow?.querySelector('.metric-value') as HTMLElement;
+
+    const pause = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+    while (true) {
+      [rpmRow, oilRow, scanRow, faultsRow].forEach((row) => {
+        if (!row) return;
+        row.classList.add('opacity-40');
+        row.classList.remove('opacity-100');
+      });
+
+      panel.querySelectorAll('.metric-text, .metric-unit').forEach((el) => {
+        el.classList.add('opacity-0');
+        el.classList.remove('opacity-100');
+      });
+
+      panel.querySelector('.metric-graph')?.classList.add('text-seriols-red/30');
+      panel.querySelector('.metric-graph')?.classList.remove('text-seriols-red/80');
+
+      const bars = panel.querySelector('.metric-bars');
+      bars?.classList.add('opacity-30');
+      bars?.classList.remove('opacity-100');
+      panel.querySelectorAll('.bar').forEach((bar) => {
+        (bar as HTMLElement).style.animation = '';
+      });
+
+      if (rpmEl) rpmEl.textContent = '0';
+      if (oilEl) oilEl.textContent = '0.0';
+      if (faultsEl) faultsEl.textContent = '—';
+
+      await pause(600);
+
+      // 1. RPM → 750
+      activateRow(rpmRow);
+      activateGraph(rpmRow);
+      await animateNumber(rpmEl, 0, rpmTarget, 1800);
+      await pause(400);
+
+      // 2. Presión aceite → 4.2
+      activateRow(oilRow);
+      activateBars(oilRow);
+      await animateNumber(oilEl, 0, oilTarget, 1400, 1);
+      await pause(400);
+
+      // 3. Lectura OBD
+      activateRow(scanRow);
+      revealText(scanRow);
+      await pause(1200);
+
+      // 4. Códigos falla → 0
+      activateRow(faultsRow);
+      revealText(faultsRow);
+      await animateNumber(faultsEl, 3, faultsTarget, 1000);
+      await pause(2800);
+    }
+  }
+
+  document.querySelectorAll('.diagnostic-panel').forEach((panel) => {
+    runDiagnosticSequence(panel as HTMLElement);
+  });
+</script>
+
+<style>
+  @keyframes scan-line {
+    0% {
+      top: 0;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      top: 100%;
+      opacity: 0;
+    }
+  }
+
+  .scan-line {
+    animation: scan-line 4s ease-in-out infinite;
+  }
+
+  @keyframes bar-pulse {
+    from {
+      opacity: 0.4;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .metric-row.opacity-100 {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+</style>

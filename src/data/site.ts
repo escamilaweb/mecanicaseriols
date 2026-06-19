@@ -1,39 +1,50 @@
 export const site = {
   name: 'Mecánica Seriols',
-  description: 'Taller mecánico de confianza. Reparación, mantenimiento y diagnóstico de vehículos.',
-  url: 'https://escamilaweb.github.io/mecanicaseriols',
+  description:
+    'Ingenieros mecánicos especializados en diagnóstico, mantenimiento y reparación de vehículos de combustión e híbridos.',
+  url: 'https://mecanicaseriols.com',
   lang: 'es',
-  phone: '+34 000 000 000',
-  email: 'info@mecanicaseriols.com',
-  address: 'Dirección del taller, Ciudad',
+  phone: '55 1654 6463',
+  phoneOffice: '55 5868 6652',
+  whatsapp: '55 7837 3063',
+  email: 'agenda@mecanicaseriols.com',
+  address: 'Tlatlaya 13A Centro Urbano, 54700 Cuautitlán Izcalli, Estado de México',
   schedule: 'Lunes a Viernes: 8:00 – 18:00',
+  social: {
+    facebook: {
+      handle: '@mecanicosseriols',
+      url: 'https://www.facebook.com/mecanicosseriols',
+    },
+    instagram: {
+      handle: '@mecanicosseriols',
+      url: 'https://www.instagram.com/mecanicosseriols',
+    },
+  },
 } as const;
+
+export function mapsDirectionsUrl(address: string = site.address) {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+}
+
+export function mapsEmbedUrl(address: string = site.address) {
+  return `https://maps.google.com/maps?q=${encodeURIComponent(address)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+}
 
 export const navLinks = [
   { href: '/', label: 'Inicio' },
-  { href: '/servicios', label: 'Servicios' },
+  { href: '/#servicios', label: 'Servicios' },
+  { href: '/#empresas', label: 'Empresas' },
   { href: '/contacto', label: 'Contacto' },
 ] as const;
 
-export const services = [
-  {
-    title: 'Mantenimiento',
-    description: 'Revisiones periódicas, cambio de aceite, filtros y puesta a punto general.',
-    icon: '🔧',
-  },
-  {
-    title: 'Reparación mecánica',
-    description: 'Motor, transmisión, frenos, suspensión y sistemas auxiliares.',
-    icon: '⚙️',
-  },
-  {
-    title: 'Diagnóstico electrónico',
-    description: 'Lectura de averías, centralitas y sistemas de gestión del motor.',
-    icon: '💻',
-  },
-  {
-    title: 'Pre-ITV',
-    description: 'Revisión previa para asegurar que tu vehículo pasa la inspección.',
-    icon: '✅',
-  },
-] as const;
+export function navHref(href: string, base: string) {
+  const hashIndex = href.indexOf('#');
+  if (hashIndex !== -1) {
+    const path = href.slice(0, hashIndex);
+    const hash = href.slice(hashIndex);
+    if (path === '' || path === '/') return `${base}${hash}`;
+    return `${base}${path.slice(1)}/${hash}`;
+  }
+  if (href === '/') return base;
+  return `${base}${href.slice(1)}/`;
+}

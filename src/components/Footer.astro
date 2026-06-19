@@ -1,107 +1,84 @@
 ---
-import { navLinks, site } from '../data/site';
+import { navHref, navLinks, site } from '../data/site';
+import SocialLinks from './SocialLinks.astro';
+
 const base = import.meta.env.BASE_URL;
 ---
 
-<footer class="footer">
-  <div class="container footer-grid">
+<footer class="border-t border-seriols-gray-300/40 bg-white">
+  <div class="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-3 lg:px-8">
     <div>
-      <p class="footer-brand">{site.name}</p>
-      <p class="footer-text">{site.description}</p>
+      <img
+        src={`${base}images/Seriols-logo.svg`}
+        alt={site.name}
+        class="mb-4 h-7 w-auto"
+        width="160"
+        height="24"
+      />
+      <p class="max-w-xs text-sm text-body-text">{site.description}</p>
     </div>
+
     <div>
-      <p class="footer-heading">Enlaces</p>
-      <ul class="footer-links">
+      <p class="mb-3 font-mono text-xs font-semibold uppercase tracking-widest text-seriols-gray-500">
+        Enlaces
+      </p>
+      <ul class="space-y-2">
         {
           navLinks.map(({ href, label }) => (
             <li>
-              <a href={href === '/' ? base : `${base}${href.slice(1)}/`}>{label}</a>
+              <a
+                href={navHref(href, base)}
+                class="text-sm text-body-text transition hover:text-seriols-red"
+              >
+                {label}
+              </a>
             </li>
           ))
         }
       </ul>
     </div>
+
     <div>
-      <p class="footer-heading">Contacto</p>
-      <ul class="footer-links">
-        <li><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></li>
-        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      <p class="mb-3 font-mono text-xs font-semibold uppercase tracking-widest text-seriols-gray-500">
+        Contacto
+      </p>
+      <ul class="space-y-2 text-sm text-body-text">
+        <li>
+          <a href={`tel:${site.phone.replace(/\s/g, '')}`} class="hover:text-seriols-red">
+            {site.phone}
+          </a>
+        </li>
+        <li>
+          <a href={`mailto:${site.email}`} class="hover:text-seriols-red">{site.email}</a>
+        </li>
         <li>{site.address}</li>
-        <li>{site.schedule}</li>
+        <li class="pt-3">
+          <p class="mb-2 font-mono text-[10px] uppercase tracking-wider text-seriols-gray-500">Redes sociales</p>
+          <SocialLinks variant="footer" />
+        </li>
       </ul>
     </div>
   </div>
-  <div class="container footer-bottom">
-    <p>&copy; {new Date().getFullYear()} {site.name}. Todos los derechos reservados.</p>
+
+  <div class="border-t border-seriols-gray-300/40 py-4">
+    <p class="text-center text-xs text-seriols-gray-500">
+      &copy; <span data-footer-year></span> {site.name}. Todos los derechos reservados.
+      <span class="mx-2 text-seriols-gray-300">|</span>
+      by{' '}
+      <a
+        href="https://cbrand.mx/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-medium text-seriols-gray-700 transition hover:text-seriols-red"
+      >
+        cBrand
+      </a>
+    </p>
   </div>
 </footer>
 
-<style>
-  .footer {
-    background: var(--color-bg-alt);
-    border-top: 1px solid var(--color-border);
-    margin-top: auto;
-  }
-
-  .footer-grid {
-    display: grid;
-    gap: 2rem;
-    padding-block: 3rem;
-  }
-
-  @media (min-width: 768px) {
-    .footer-grid {
-      grid-template-columns: 2fr 1fr 1fr;
-    }
-  }
-
-  .footer-brand {
-    font-weight: 800;
-    font-size: 1.125rem;
-    margin: 0 0 0.5rem;
-  }
-
-  .footer-text {
-    color: var(--color-text-muted);
-    margin: 0;
-    max-width: 28rem;
-  }
-
-  .footer-heading {
-    font-weight: 600;
-    margin: 0 0 0.75rem;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text-muted);
-  }
-
-  .footer-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-  }
-
-  .footer-links a {
-    color: var(--color-text-muted);
-    transition: color 0.2s;
-  }
-
-  .footer-links a:hover {
-    color: var(--color-primary);
-  }
-
-  .footer-bottom {
-    padding-block: 1.25rem;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .footer-bottom p {
-    margin: 0;
-    font-size: 0.875rem;
-    color: var(--color-text-muted);
-  }
-</style>
+<script is:inline>
+  document.querySelectorAll('[data-footer-year]').forEach((el) => {
+    el.textContent = String(new Date().getFullYear());
+  });
+</script>

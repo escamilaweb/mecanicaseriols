@@ -1,0 +1,117 @@
+---
+const fieldClass =
+  'rounded-lg border border-seriols-gray-300/80 bg-seriols-light/50 px-3 py-2.5 text-body-text transition focus:border-seriols-red/40 focus:outline-none focus:ring-2 focus:ring-seriols-red/15';
+
+const labelClass = 'flex flex-col gap-1.5 text-sm font-medium text-body-text';
+const apiUrl = `${import.meta.env.BASE_URL}api/contact/`;
+---
+
+<form id="contact-form" class="flex flex-col gap-4" novalidate>
+  <div class="grid gap-4 sm:grid-cols-2">
+    <label class={labelClass}>
+      Nombre
+      <input type="text" name="name" required autocomplete="name" placeholder="Tu nombre" class={fieldClass} />
+    </label>
+    <label class={labelClass}>
+      Teléfono
+      <input
+        type="tel"
+        name="phone"
+        required
+        autocomplete="tel"
+        placeholder="55 1234 5678"
+        class={fieldClass}
+      />
+    </label>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <label class={labelClass}>
+      Email
+      <input type="email" name="email" required autocomplete="email" placeholder="tu@email.com" class={fieldClass} />
+    </label>
+    <label class={labelClass}>
+      Marca de tu auto
+      <input type="text" name="carBrand" required placeholder="Ej. Toyota, Nissan…" class={fieldClass} />
+    </label>
+  </div>
+
+  <label class={labelClass}>
+    Mensaje
+    <textarea
+      name="message"
+      rows="4"
+      required
+      placeholder="¿En qué podemos ayudarte?"
+      class={fieldClass}></textarea>
+  </label>
+
+  <p id="contact-form-status" class="hidden text-sm" role="status" aria-live="polite"></p>
+
+  <button
+    type="submit"
+    id="contact-form-submit"
+    class="rounded-full bg-seriols-red px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-seriols-red-dark disabled:cursor-not-allowed disabled:opacity-60"
+  >
+    Enviar mensaje
+  </button>
+</form>
+
+<script define:vars={{ apiUrl }}>
+  const form = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('contact-form-submit');
+  const statusEl = document.getElementById('contact-form-status');
+
+  if (form instanceof HTMLFormElement && submitBtn instanceof HTMLButtonElement && statusEl) {
+    const setStatus = (message, type) => {
+      statusEl.textContent = message;
+      statusEl.classList.remove('hidden', 'text-seriols-red', 'text-body-text', 'text-green-700');
+      statusEl.classList.add(type === 'error' ? 'text-seriols-red' : type === 'success' ? 'text-green-700' : 'text-body-text');
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const payload = {
+        name: String(formData.get('name') ?? '').trim(),
+        phone: String(formData.get('phone') ?? '').trim(),
+        email: String(formData.get('email') ?? '').trim(),
+        carBrand: String(formData.get('carBrand') ?? '').trim(),
+        message: String(formData.get('message') ?? '').trim(),
+      };
+
+      if (!payload.name || !payload.phone || !payload.email || !payload.carBrand || !payload.message) {
+        setStatus('Completa todos los campos obligatorios.', 'error');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando…';
+      setStatus('Enviando tu mensaje…', 'info');
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          setStatus(data.error ?? 'No se pudo enviar el mensaje. Intenta de nuevo.', 'error');
+          return;
+        }
+
+        form.reset();
+        setStatus('¡Gracias! Recibimos tu mensaje y te contactaremos pronto.', 'success');
+      } catch {
+        setStatus('Error de conexión. Verifica tu red e intenta de nuevo.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enviar mensaje';
+      }
+    });
+  }
+</script>

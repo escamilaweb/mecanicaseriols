@@ -1,0 +1,130 @@
+---
+import ScrollReveal from '../ui/ScrollReveal.astro';
+import ImageSlider from '../ui/ImageSlider.astro';
+import { home } from '../../data/home';
+import { gallerySections } from '../../data/gallery';
+
+const { specialServices, services } = home;
+const base = import.meta.env.BASE_URL;
+
+const eyebrow = 'mb-2 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-seriols-red';
+
+const icons: Record<string, string> = {
+  fleet: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4',
+  home: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
+  shield: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+};
+---
+
+<!-- Bloque 1: Catálogo técnico — fondo rojo suave -->
+<section id="servicios" class="scroll-mt-20 relative bg-gradient-to-br from-[#fff5f5] via-white to-[#f0f2f5] py-16 sm:py-24">
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(226,7,7,0.06),transparent_55%)]"></div>
+  <div class="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-seriols-red/60 to-transparent"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <ScrollReveal>
+      <header class="mb-10 max-w-2xl lg:mb-14">
+        <p class={eyebrow}>Catálogo técnico</p>
+        <h2 class="text-3xl font-bold tracking-tight text-body-text sm:text-4xl">Servicios</h2>
+        <p class="mt-4 text-sm leading-relaxed text-body-text sm:text-base">
+          Diagnóstico con scanner, presupuesto claro y garantía por escrito. Cada servicio está pensado
+          para devolverte seguridad al volante — no solo reparar el auto.
+        </p>
+      </header>
+    </ScrollReveal>
+
+    <div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+      <ul class="order-2 space-y-3 lg:order-1">
+        {
+          services.map(({ title, description }, i) => (
+            <ScrollReveal delay={i * 50}>
+              <li class="card-lift group rounded-xl border border-seriols-gray-300/50 border-l-2 border-l-transparent bg-white p-4 transition-colors duration-300 hover:border-seriols-red/30 hover:border-l-seriols-red/60 sm:p-5">
+                <div class="mb-2 flex items-start gap-2">
+                  <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-seriols-red/10 font-mono text-[10px] font-bold text-seriols-red">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3 class="text-[15px] font-bold leading-snug text-body-text">{title}</h3>
+                </div>
+                <p class="pl-7 text-[14px] leading-relaxed text-body-text">{description}</p>
+              </li>
+            </ScrollReveal>
+          ))
+        }
+      </ul>
+
+      <div class="order-1 self-start lg:order-2 lg:sticky lg:top-24">
+        <ImageSlider
+          id="gallery-catalog"
+          images={gallerySections.catalog.images}
+          alt={gallerySections.catalog.alt}
+          variant="elegant"
+          autoplay={true}
+          autoplayMs={5000}
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bloque 2: Soluciones particulares — fondo blanco -->
+<section id="empresas" class="scroll-mt-20 bg-white py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+      <ScrollReveal>
+        <ImageSlider
+          id="gallery-special"
+          images={gallerySections.special.images}
+          alt={gallerySections.special.alt}
+          variant="subtle"
+          autoplay={true}
+          autoplayMs={5000}
+        />
+      </ScrollReveal>
+
+      <div class="space-y-8">
+        <ScrollReveal delay={80}>
+          <p class={eyebrow}>Servicios especiales</p>
+          <h2 class="text-3xl font-bold tracking-tight text-body-text sm:text-4xl">
+            Soluciones para particulares y empresas
+          </h2>
+          <p class="mt-4 text-sm leading-relaxed text-body-text sm:text-base">
+            Ya sea un solo vehículo o toda una flotilla: mantenimiento programado, servicio a domicilio
+            y garantía por escrito para que sigas operando con tranquilidad.
+          </p>
+        </ScrollReveal>
+
+        <ul class="space-y-5">
+          {
+            specialServices.map(({ label, icon, description }, i) => (
+              <ScrollReveal delay={120 + i * 60}>
+                <li class="flex items-start gap-3.5">
+                  <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-seriols-dark">
+                    <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icons[icon]}></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="text-[15px] font-semibold text-body-text">{label}</h3>
+                    <p class="mt-1 text-[14px] leading-relaxed text-body-text">{description}</p>
+                  </div>
+                </li>
+              </ScrollReveal>
+            ))
+          }
+        </ul>
+
+        <ScrollReveal delay={350}>
+          <a
+            href={`${base}contacto/`}
+            class="inline-flex items-center gap-2 rounded-full bg-seriols-red px-6 py-3 text-sm font-bold uppercase tracking-wider text-white shadow-sm transition hover:bg-seriols-red-dark hover:shadow-md"
+          >
+            Solicitar cotización para mi empresa
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+        </ScrollReveal>
+      </div>
+    </div>
+  </div>
+</section>

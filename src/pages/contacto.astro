@@ -1,161 +1,279 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site } from '../data/site';
+import ContactForm from '../components/ContactForm.astro';
+import { mapsDirectionsUrl, mapsEmbedUrl, site } from '../data/site';
+
+const base = import.meta.env.BASE_URL;
+const phoneHref = `tel:${site.phone.replace(/\s/g, '')}`;
+const officeHref = `tel:${site.phoneOffice.replace(/\s/g, '')}`;
+const whatsappHref = `https://wa.me/52${site.whatsapp.replace(/\s/g, '')}`;
+const directionsUrl = mapsDirectionsUrl();
+const embedUrl = mapsEmbedUrl();
+
+const eyebrow = 'mb-2 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-seriols-red';
+
+const contactItems = [
+  {
+    label: 'Teléfono',
+    value: site.phone,
+    href: phoneHref,
+    icon: 'phone',
+  },
+  {
+    label: 'WhatsApp',
+    value: site.whatsapp,
+    href: whatsappHref,
+    icon: 'whatsapp',
+    external: true,
+  },
+  {
+    label: 'Oficina',
+    value: site.phoneOffice,
+    href: officeHref,
+    icon: 'phone',
+  },
+  {
+    label: 'Email',
+    value: site.email,
+    href: `mailto:${site.email}`,
+    icon: 'email',
+  },
+  {
+    label: 'Horario',
+    value: site.schedule,
+    icon: 'clock',
+  },
+  {
+    label: 'Dirección',
+    value: site.address,
+    icon: 'location',
+  },
+] as const;
 ---
 
-<BaseLayout title="Contacto" description="Contacta con Mecánica Seriols. Teléfono, email y horario del taller.">
-  <section class="section page-header">
-    <div class="container">
-      <h1 class="section-title">Contacto</h1>
-      <p class="section-subtitle">Estamos aquí para ayudarte. Ponte en contacto con nosotros.</p>
+<BaseLayout title="Contacto" description="Contacta con Mecánica Seriols. Teléfono, WhatsApp, email, horario y ubicación del taller en Cuautitlán Izcalli." headerVariant="hero">
+  <section class="contact-banner relative overflow-hidden border-b border-white/10 bg-seriols-dark py-16 sm:py-20">
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(226,7,7,0.12),transparent_45%)]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_10%_90%,rgba(255,255,255,0.04),transparent_40%)]"></div>
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-seriols-red/70 to-transparent"></div>
+
+      <div class="contact-checkered contact-checkered--red absolute -right-16 top-10 h-32 w-[55%] rotate-[-8deg] opacity-[0.14] sm:h-40"></div>
+      <div class="contact-checkered contact-checkered--mono absolute -left-12 bottom-6 h-24 w-[45%] rotate-[6deg] opacity-[0.08] sm:h-28"></div>
+
+      <img
+        src={`${base}images/flag-checkered-red.svg`}
+        alt=""
+        class="absolute right-6 top-8 h-16 w-24 opacity-30 sm:right-12 sm:h-20 sm:w-28"
+        width="112"
+        height="80"
+      />
+      <img
+        src={`${base}images/flag-checkered.svg`}
+        alt=""
+        class="absolute bottom-10 right-[38%] hidden h-12 w-16 opacity-20 sm:block"
+        width="64"
+        height="48"
+      />
+
+      <svg class="absolute -left-6 bottom-0 h-36 w-36 text-white/[0.04] sm:h-44 sm:w-44" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="0.75"
+          d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+        />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.75" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+      </svg>
+
+      <svg class="absolute right-[18%] top-1/2 h-28 w-28 -translate-y-1/2 text-white/[0.035]" fill="none" viewBox="0 0 120 120" stroke="currentColor">
+        <circle cx="60" cy="60" r="44" stroke-width="1.5" opacity="0.6"></circle>
+        <circle cx="60" cy="60" r="28" stroke-width="1" opacity="0.4"></circle>
+        <path stroke-width="1.2" d="M60 16v8M60 96v8M16 60h8M96 60h8M28 28l6 6M86 86l6 6M92 28l-6 6M34 86l-6 6"></path>
+      </svg>
+
+      <svg class="contact-road-lines absolute bottom-0 left-0 h-24 w-full opacity-[0.12]" preserveAspectRatio="none" viewBox="0 0 1200 80" fill="none">
+        <path d="M0 40h1200" stroke="white" stroke-width="1" stroke-dasharray="28 18"></path>
+        <path d="M0 58h1200" stroke="#e20707" stroke-width="0.75" stroke-dasharray="12 24" opacity="0.7"></path>
+        <path d="M0 22h1200" stroke="white" stroke-width="0.5" stroke-dasharray="8 32" opacity="0.5"></path>
+      </svg>
+
+      <div class="absolute left-0 top-1/3 h-px w-1/3 bg-gradient-to-r from-seriols-red/40 to-transparent"></div>
+      <div class="absolute bottom-1/4 right-0 h-px w-2/5 bg-gradient-to-l from-white/20 to-transparent"></div>
+    </div>
+
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p class={eyebrow}>Estamos para ayudarte</p>
+      <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Contacto</h1>
+      <p class="mt-4 max-w-2xl text-sm leading-relaxed text-seriols-gray-300 sm:text-base">
+        Agenda tu cita, solicita presupuesto o visítanos en el taller. Respondemos con la misma transparencia
+        que aplicamos en cada diagnóstico.
+      </p>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container contact-grid">
-      <div class="contact-card">
-        <h2>Datos de contacto</h2>
-        <dl>
-          <div>
-            <dt>Teléfono</dt>
-            <dd><a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a></dd>
-          </div>
-          <div>
-            <dt>Email</dt>
-            <dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
-          </div>
-          <div>
-            <dt>Dirección</dt>
-            <dd>{site.address}</dd>
-          </div>
-          <div>
-            <dt>Horario</dt>
-            <dd>{site.schedule}</dd>
-          </div>
-        </dl>
+  <section class="bg-seriols-light py-14 sm:py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
+        <div class="rounded-2xl border border-seriols-gray-300/50 bg-white p-6 shadow-sm sm:p-8">
+          <h2 class="mb-6 text-xl font-bold text-body-text">Datos de contacto</h2>
+          <ul class="space-y-4">
+            {
+              contactItems.map(({ label, value, href, icon, external }) => (
+                <li class="flex items-start gap-4">
+                  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-seriols-red/10 text-seriols-red">
+                    {icon === 'phone' && (
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.5"
+                          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                        />
+                      </svg>
+                    )}
+                    {icon === 'whatsapp' && (
+                      <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.884 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                      </svg>
+                    )}
+                    {icon === 'email' && (
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.5"
+                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        />
+                      </svg>
+                    )}
+                    {icon === 'clock' && (
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.5"
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    )}
+                    {icon === 'location' && (
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.5"
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    )}
+                  </div>
+                  <div class="min-w-0 pt-0.5">
+                    <p class="font-mono text-[10px] uppercase tracking-wider text-seriols-gray-500">{label}</p>
+                    {
+                      href ? (
+                        <a
+                          href={href}
+                          class="mt-1 block text-sm font-semibold text-body-text transition hover:text-seriols-red"
+                          target={external ? '_blank' : undefined}
+                          rel={external ? 'noopener noreferrer' : undefined}
+                        >
+                          {value}
+                        </a>
+                      ) : (
+                        <p class="mt-1 text-sm leading-relaxed text-body-text">{value}</p>
+                      )
+                    }
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+
+          <a
+            href={directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-seriols-red px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-seriols-red-dark sm:w-auto"
+          >
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            </svg>
+            Cómo llegar
+          </a>
+        </div>
+
+        <div class="rounded-2xl border border-seriols-gray-300/50 bg-white p-6 shadow-sm sm:p-8">
+          <h2 class="mb-2 text-xl font-bold text-body-text">Escríbenos</h2>
+          <p class="mb-6 text-sm leading-relaxed text-body-text">
+            Cuéntanos sobre tu vehículo y te respondemos a la brevedad para agendar cita o enviarte presupuesto.
+          </p>
+          <ContactForm />
+        </div>
       </div>
 
-      <div class="contact-card">
-        <h2>Escríbenos</h2>
-        <p class="form-note">
-          Formulario de contacto pendiente de integrar. Mientras tanto, utiliza el teléfono o el email.
-        </p>
-        <form class="contact-form" action="#" method="post">
-          <label>
-            Nombre
-            <input type="text" name="name" required placeholder="Tu nombre" />
-          </label>
-          <label>
-            Email
-            <input type="email" name="email" required placeholder="tu@email.com" />
-          </label>
-          <label>
-            Mensaje
-            <textarea name="message" rows="4" required placeholder="¿En qué podemos ayudarte?"></textarea>
-          </label>
-          <button type="submit" class="btn btn-primary" disabled>Enviar (próximamente)</button>
-        </form>
+      <div class="mt-8 overflow-hidden rounded-2xl border border-seriols-gray-300/50 bg-white shadow-sm">
+        <div class="border-b border-seriols-gray-300/40 px-6 py-4 sm:px-8">
+          <h2 class="text-lg font-bold text-body-text">Ubicación del taller</h2>
+          <p class="mt-1 text-sm text-body-text">{site.address}</p>
+        </div>
+        <div class="relative aspect-[16/9] w-full sm:aspect-[21/9]">
+          <iframe
+            title="Mapa de Mecánica Seriols en Cuautitlán Izcalli"
+            src={embedUrl}
+            class="absolute inset-0 h-full w-full border-0"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          />
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-4 border-t border-seriols-gray-300/40 px-6 py-4 sm:px-8">
+          <p class="text-sm text-body-text">{site.schedule}</p>
+          <a
+            href={directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-seriols-red transition hover:text-seriols-red-dark"
+          >
+            Abrir en Google Maps
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .page-header {
-    padding-bottom: 0;
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-bg-alt);
+  .contact-checkered {
+    background-size: 16px 16px;
+    mask-image: linear-gradient(to left, black 30%, transparent 95%);
   }
 
-  .contact-grid {
-    display: grid;
-    gap: 1.5rem;
+  .contact-checkered--red {
+    background-color: rgba(226, 7, 7, 0.15);
+    background-image:
+      linear-gradient(45deg, #e20707 25%, transparent 25%, transparent 75%, #e20707 75%, #e20707),
+      linear-gradient(45deg, #e20707 25%, transparent 25%, transparent 75%, #e20707 75%, #e20707);
+    background-position:
+      0 0,
+      8px 8px;
   }
 
-  @media (min-width: 768px) {
-    .contact-grid {
-      grid-template-columns: 1fr 1fr;
-    }
+  .contact-checkered--mono {
+    background-color: rgba(255, 255, 255, 0.02);
+    background-image:
+      linear-gradient(45deg, rgba(255, 255, 255, 0.35) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.35) 75%),
+      linear-gradient(45deg, rgba(255, 255, 255, 0.35) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.35) 75%);
+    background-position:
+      0 0,
+      8px 8px;
   }
 
-  .contact-card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 2rem;
-  }
-
-  .contact-card h2 {
-    margin: 0 0 1.25rem;
-    font-size: 1.25rem;
-  }
-
-  dl {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  dt {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text-muted);
-    margin-bottom: 0.25rem;
-  }
-
-  dd {
-    margin: 0;
-    font-size: 1rem;
-  }
-
-  dd a {
-    color: var(--color-primary);
-  }
-
-  dd a:hover {
-    text-decoration: underline;
-  }
-
-  .form-note {
-    color: var(--color-text-muted);
-    font-size: 0.9375rem;
-    margin: 0 0 1.25rem;
-  }
-
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-
-  input,
-  textarea {
-    padding: 0.625rem 0.875rem;
-    border-radius: var(--radius);
-    border: 1px solid var(--color-border);
-    background: var(--color-bg);
-    color: var(--color-text);
-    font: inherit;
-  }
-
-  input:focus,
-  textarea:focus {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 1px;
-  }
-
-  button[disabled] {
-    opacity: 0.6;
-    cursor: not-allowed;
+  .contact-road-lines {
+    mask-image: linear-gradient(to top, black, transparent 85%);
   }
 </style>

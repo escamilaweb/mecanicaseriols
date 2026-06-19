@@ -1,0 +1,249 @@
+---
+interface Props {
+  id: string;
+  images: readonly string[];
+  alt: string;
+  autoplay?: boolean;
+  autoplayMs?: number;
+  variant?: 'elegant' | 'subtle';
+}
+
+const {
+  id,
+  images,
+  alt,
+  autoplay = true,
+  autoplayMs = 5000,
+  variant = 'elegant',
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const isSubtle = variant === 'subtle';
+
+function src(path: string) {
+  return `${base}${path.split('/').map(encodeURIComponent).join('/')}`;
+}
+---
+
+<div
+  class:list={['gallery-slider group relative', isSubtle && 'gallery-slider--subtle']}
+  data-slider={id}
+  data-autoplay={autoplay ? 'true' : 'false'}
+  data-autoplay-ms={autoplayMs}
+  tabindex="0"
+  aria-roledescription="carousel"
+  aria-label={alt}
+>
+  <div
+    class:list={[
+      'slider-viewport relative overflow-hidden',
+      isSubtle
+        ? 'rounded-xl border border-seriols-gray-300/30 bg-[#f8f8f8]'
+        : 'rounded-2xl',
+    ]}
+  >
+    <div
+      class="slider-frame relative h-[260px] w-full overflow-hidden sm:h-[320px] lg:h-[360px]"
+    >
+      <div class="slider-track absolute inset-0 flex transition-transform duration-700 ease-in-out will-change-transform" data-slider-track>
+        {
+          images.map((image, i) => (
+            <figure class="relative h-full min-w-full shrink-0">
+              <img
+                src={src(image)}
+                alt={`${alt} — ${i + 1} de ${images.length}`}
+                class="absolute inset-0 h-full w-full object-cover object-center"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                draggable="false"
+              />
+              {
+                !isSubtle && (
+                  <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/10"></div>
+                )
+              }
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="slider-prev absolute left-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-body-text opacity-0 shadow-sm backdrop-blur-sm transition-all duration-300 hover:bg-white focus:opacity-100 focus:outline-none focus:ring-1 focus:ring-seriols-red/40 group-hover:opacity-100 group-focus-within:opacity-100 sm:left-3 sm:h-9 sm:w-9"
+      data-slider-prev
+      aria-label="Imagen anterior"
+    >
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      class="slider-next absolute right-2 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-body-text opacity-0 shadow-sm backdrop-blur-sm transition-all duration-300 hover:bg-white focus:opacity-100 focus:outline-none focus:ring-1 focus:ring-seriols-red/40 group-hover:opacity-100 group-focus-within:opacity-100 sm:right-3 sm:h-9 sm:w-9"
+      data-slider-next
+      aria-label="Imagen siguiente"
+    >
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="mt-2.5 flex justify-center gap-1.5" data-slider-dots role="tablist" aria-label="Seleccionar imagen">
+    {
+      images.map((_, i) => (
+        <button
+          type="button"
+          class:list={[
+            'rounded-full transition-all duration-300',
+            isSubtle ? 'h-1' : 'h-1.5',
+            i === 0
+              ? isSubtle
+                ? 'w-5 bg-seriols-gray-500'
+                : 'w-6 bg-seriols-red'
+              : isSubtle
+                ? 'w-1 bg-seriols-gray-300 hover:bg-seriols-gray-400'
+                : 'w-1.5 bg-seriols-gray-300 hover:bg-seriols-gray-500',
+          ]}
+          data-slider-dot={i}
+          role="tab"
+          aria-label={`Ir a imagen ${i + 1}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+        />
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  function initSlider(root: HTMLElement) {
+    const track = root.querySelector('[data-slider-track]') as HTMLElement;
+    const slides = track?.children.length ?? 0;
+    if (!track || slides === 0) return;
+
+    let index = 0;
+    let touchStartX = 0;
+    let touchDeltaX = 0;
+    let isDragging = false;
+    let autoplayTimer: ReturnType<typeof setInterval> | null = null;
+
+    const autoplay = root.dataset.autoplay === 'true';
+    const autoplayMs = parseInt(root.dataset.autoplayMs || '5000', 10);
+    const isSubtle = root.classList.contains('gallery-slider--subtle');
+
+    const dots = root.querySelectorAll('[data-slider-dot]');
+    const prev = root.querySelector('[data-slider-prev]') as HTMLButtonElement;
+    const next = root.querySelector('[data-slider-next]') as HTMLButtonElement;
+
+    function updateDots() {
+      dots.forEach((dot, di) => {
+        const active = di === index;
+        dot.setAttribute('aria-selected', active ? 'true' : 'false');
+        if (isSubtle) {
+          dot.classList.toggle('w-5', active);
+          dot.classList.toggle('bg-seriols-gray-500', active);
+          dot.classList.toggle('w-1', !active);
+          dot.classList.toggle('bg-seriols-gray-300', !active);
+        } else {
+          dot.classList.toggle('w-6', active);
+          dot.classList.toggle('bg-seriols-red', active);
+          dot.classList.toggle('w-1.5', !active);
+          dot.classList.toggle('bg-seriols-gray-300', !active);
+        }
+      });
+    }
+
+    function goTo(i: number) {
+      index = (i + slides) % slides;
+      track.style.transform = `translateX(-${index * 100}%)`;
+      updateDots();
+    }
+
+    function startAutoplay() {
+      if (!autoplay) return;
+      stopAutoplay();
+      autoplayTimer = setInterval(() => goTo(index + 1), autoplayMs);
+    }
+
+    function stopAutoplay() {
+      if (autoplayTimer) clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+
+    prev?.addEventListener('click', () => {
+      goTo(index - 1);
+      stopAutoplay();
+      startAutoplay();
+    });
+    next?.addEventListener('click', () => {
+      goTo(index + 1);
+      stopAutoplay();
+      startAutoplay();
+    });
+    dots.forEach((dot, i) =>
+      dot.addEventListener('click', () => {
+        goTo(i);
+        stopAutoplay();
+        startAutoplay();
+      }),
+    );
+
+    root.addEventListener('mouseenter', stopAutoplay);
+    root.addEventListener('mouseleave', startAutoplay);
+
+    root.addEventListener(
+      'touchstart',
+      (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchDeltaX = 0;
+        isDragging = true;
+        stopAutoplay();
+      },
+      { passive: true },
+    );
+
+    root.addEventListener(
+      'touchmove',
+      (e) => {
+        if (!isDragging) return;
+        touchDeltaX = e.touches[0].clientX - touchStartX;
+      },
+      { passive: true },
+    );
+
+    root.addEventListener(
+      'touchend',
+      () => {
+        if (!isDragging) return;
+        isDragging = false;
+        if (Math.abs(touchDeltaX) > 50) {
+          goTo(touchDeltaX > 0 ? index - 1 : index + 1);
+        }
+        startAutoplay();
+      },
+      { passive: true },
+    );
+
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') goTo(index - 1);
+      if (e.key === 'ArrowRight') goTo(index + 1);
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) startAutoplay();
+          else stopAutoplay();
+        });
+      },
+      { threshold: 0.3 },
+    );
+    observer.observe(root);
+
+    startAutoplay();
+  }
+
+  document.querySelectorAll('[data-slider]').forEach((el) => initSlider(el as HTMLElement));
+</script>

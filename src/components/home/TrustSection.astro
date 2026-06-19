@@ -1,0 +1,43 @@
+---
+import ScrollReveal from '../ui/ScrollReveal.astro';
+import { home } from '../../data/home';
+
+const { trust } = home;
+const base = import.meta.env.BASE_URL;
+---
+
+<section class="border-y border-seriols-gray-300/30 bg-white py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <ScrollReveal>
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <p class="mb-2 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-seriols-red">
+          Respaldo comprobado
+        </p>
+        <h2 class="mb-4 text-3xl font-bold tracking-tight text-body-text">{trust.title}</h2>
+        <p class="text-body-text">{trust.description}</p>
+      </div>
+    </ScrollReveal>
+
+    <ScrollReveal delay={120}>
+      <p class="mb-10 text-center text-sm font-medium text-body-text">{trust.corporateNote}</p>
+    </ScrollReveal>
+
+    <div class="grid grid-cols-2 items-center justify-items-center gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
+      {
+        trust.corporateClients.map(({ name, logo, alt }, i) => (
+          <ScrollReveal delay={80 + i * 70} class="flex w-full max-w-[140px] items-center justify-center">
+            <img
+              src={`${base}images/clients/${logo}`}
+              alt={alt}
+              title={name}
+              class="client-logo h-10 w-auto max-w-full object-contain sm:h-12"
+              loading="lazy"
+              width="140"
+              height="48"
+            />
+          </ScrollReveal>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,8 +1,6 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages (manual)
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -30,13 +28,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Build static site
+        run: npm run build:static
+        env:
+          ASTRO_BASE: /mecanicaseriols/
+          PUBLIC_SITE_URL: https://escamilaweb.github.io/mecanicaseriols
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: static-output
 
   deploy:
     needs: build

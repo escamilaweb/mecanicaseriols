@@ -1,0 +1,144 @@
+---
+import QuickActionPanel from './QuickActionPanel.astro';
+import { home } from '../../data/home';
+
+const base = import.meta.env.BASE_URL;
+const { hero } = home;
+---
+
+<section
+  id="hero-section"
+  class="relative flex min-h-0 items-center overflow-hidden py-24 sm:py-28 md:py-32 lg:h-[750px] lg:max-h-[750px] lg:py-20"
+>
+  <div class="absolute inset-0 overflow-hidden">
+    <img
+      id="hero-bg-image"
+      src={`${base}images/hero.webp`}
+      alt={hero.imageAlt}
+      class="hero-parallax-img"
+      fetchpriority="high"
+      width="1920"
+      height="1080"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-seriols-dark/95 via-seriols-dark/75 to-seriols-dark/40"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-seriols-dark/80 via-transparent to-seriols-dark/30"></div>
+  </div>
+
+  <div class="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:h-full lg:px-8">
+    <div class="grid items-center gap-10 lg:h-full lg:grid-cols-[minmax(0,13fr)_minmax(0,7fr)] lg:gap-8 xl:gap-10">
+      <div class="w-full lg:max-w-none">
+        <p class="mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-seriols-gray-300 sm:text-[0.8125rem]">
+          {hero.subtitle}
+        </p>
+
+        <h1 class="mb-4 max-w-[95%] text-[1.75rem] font-black uppercase leading-[1.1] tracking-[0.02em] text-white sm:text-4xl sm:leading-[1.08] lg:text-[2.625rem] lg:leading-[1.06] xl:text-5xl xl:leading-[1.05] 2xl:text-[3.35rem]">
+          {
+            hero.headline.map((line, i) => (
+              <span class:list={['block', i === 0 && 'mb-1.5', i === hero.headlineAccent && 'text-seriols-red']}>{line}</span>
+            ))
+          }
+        </h1>
+
+        <p class="mb-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/85 sm:text-base lg:text-lg">
+          {hero.tagline}
+        </p>
+
+        <p class="mb-6 max-w-xl text-sm leading-relaxed text-white/70 sm:max-w-2xl sm:text-base lg:max-w-[90%]">
+          {hero.description}
+        </p>
+
+        <div class="flex flex-wrap gap-3">
+          <a
+            href={`${base}contacto/`}
+            class="inline-flex items-center rounded-full bg-seriols-gray-300 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-seriols-dark transition hover:bg-white sm:px-6 sm:py-3 sm:text-sm"
+          >
+            Pedir cita
+          </a>
+          <a
+            href={`${base}#servicios`}
+            class="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm transition hover:border-white/40 hover:bg-white/10 sm:px-6 sm:py-3 sm:text-sm"
+          >
+            Ver servicios
+          </a>
+        </div>
+      </div>
+
+      <div class="flex justify-center pb-2 lg:justify-end lg:pb-0">
+        <QuickActionPanel />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const heroSection = document.getElementById('hero-section');
+  const heroBg = document.getElementById('hero-bg-image');
+
+  if (heroSection && heroBg) {
+    let ticking = false;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const updateHeroMotion = () => {
+      if (prefersReducedMotion) {
+        ticking = false;
+        return;
+      }
+
+      const rect = heroSection.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      if (rect.bottom <= 0 || rect.top >= viewportHeight) {
+        ticking = false;
+        return;
+      }
+
+      const heroHeight = Math.max(rect.height, 1);
+      const scrolled = Math.max(0, -rect.top);
+      const scrollRange = heroHeight + viewportHeight * 0.35;
+      const progress = Math.min(1, scrolled / scrollRange);
+
+      const yPercent = 5 - progress * 14;
+      const scale = 1.08 + progress * 0.1;
+
+      heroBg.style.setProperty('--hero-y', `${yPercent}%`);
+      heroBg.style.setProperty('--hero-scale', scale.toFixed(4));
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateHeroMotion);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    updateHeroMotion();
+  }
+</script>
+
+<style>
+  .hero-parallax-img {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 135%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center;
+    transform-origin: center center;
+    will-change: transform;
+    --hero-y: 5%;
+    --hero-scale: 1.08;
+    transform: translate3d(0, calc(-50% + var(--hero-y)), 0) scale(var(--hero-scale));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-parallax-img {
+      top: 0;
+      height: 100%;
+      transform: none;
+    }
+  }
+</style>
