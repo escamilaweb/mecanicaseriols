@@ -50,6 +50,23 @@
   .label-dark {
     @apply font-mono text-[11px] uppercase tracking-wider text-white/75;
   }
+
+  .contact-input {
+    @apply rounded-lg border border-seriols-gray-300/80 bg-seriols-light/50 px-3 py-2.5 text-body-text transition focus:border-seriols-red/40 focus:outline-none focus:ring-2 focus:ring-seriols-red/15;
+  }
+
+  .contact-input.is-invalid {
+    @apply border-seriols-red/60 focus:border-seriols-red focus:ring-seriols-red/20;
+  }
+
+  .contact-field-error {
+    @apply text-xs font-medium text-seriols-red;
+  }
+
+  .contact-success-dialog::backdrop {
+    background: rgb(13 14 16 / 0.6);
+    backdrop-filter: blur(4px);
+  }
 }
 
 @layer utilities {

@@ -1,12 +1,5 @@
 ---
-const fieldClass =
-  'rounded-lg border border-seriols-gray-300/80 bg-seriols-light/50 px-3 py-2.5 text-body-text transition focus:border-seriols-red/40 focus:outline-none focus:ring-2 focus:ring-seriols-red/15';
-
-const fieldErrorClass =
-  'rounded-lg border border-seriols-red/60 bg-seriols-light/50 px-3 py-2.5 text-body-text transition focus:border-seriols-red focus:outline-none focus:ring-2 focus:ring-seriols-red/20';
-
 const labelClass = 'flex flex-col gap-1.5 text-sm font-medium text-body-text';
-const errorClass = 'hidden text-xs font-medium text-seriols-red';
 const apiUrl = `${import.meta.env.BASE_URL}api/contact/`;
 
 const fields = [
@@ -55,11 +48,11 @@ const fields = [
               maxlength={field.maxLength}
               autocomplete={field.autocomplete}
               placeholder={field.placeholder}
-              class={fieldClass}
+              class="contact-input"
               data-input={field.name}
               aria-describedby={`error-${field.name}`}
             />
-            <span id={`error-${field.name}`} class={errorClass} data-error={field.name} role="alert" />
+            <span id={`error-${field.name}`} class="contact-field-error hidden" data-error={field.name} role="alert" />
           </label>
         ))
     }
@@ -83,11 +76,11 @@ const fields = [
             required
             maxlength={field.maxLength}
             placeholder={field.placeholder}
-            class={fieldClass}
+            class="contact-input"
             data-input={field.name}
             aria-describedby={`error-${field.name}`}
           />
-          <span id={`error-${field.name}`} class={errorClass} data-error={field.name} role="alert" />
+          <span id={`error-${field.name}`} class="contact-field-error hidden" data-error={field.name} role="alert" />
         </label>
       ))
   }
@@ -103,152 +96,85 @@ const fields = [
   </button>
 </form>
 
-<div
-  id="contact-success-modal"
-  class="fixed inset-0 z-100 hidden items-center justify-center p-4"
-  role="dialog"
-  aria-modal="true"
+<dialog
+  id="contact-success-dialog"
+  class="contact-success-dialog w-[min(100%,28rem)] rounded-2xl border border-seriols-gray-300/40 bg-white p-8 shadow-2xl backdrop:bg-seriols-dark/60"
   aria-labelledby="contact-success-title"
-  aria-describedby="contact-success-desc"
-  hidden
 >
-  <div id="contact-success-backdrop" class="absolute inset-0 bg-seriols-dark/60 backdrop-blur-sm" aria-hidden="true">
+  <div
+    class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-seriols-red/10 text-seriols-red"
+    aria-hidden="true"
+  >
+    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+    </svg>
   </div>
-  <div class="relative w-full max-w-md rounded-2xl border border-seriols-gray-300/40 bg-white p-8 shadow-2xl">
-    <div
-      class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-seriols-red/10 text-seriols-red"
-      aria-hidden="true"
-    >
-      <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-      </svg>
-    </div>
-    <h2 id="contact-success-title" class="mb-3 text-center text-xl font-bold text-body-text">¡Gracias por escribirnos!</h2>
-    <p id="contact-success-desc" class="mb-6 text-center text-sm leading-relaxed text-body-text">
-      Recibimos tu mensaje con gusto. Un asesor de Mecánica Seriols se pondrá en contacto contigo muy pronto para
-      ayudarte con lo que necesites.
-    </p>
+  <h2 id="contact-success-title" class="mb-3 text-center text-xl font-bold text-body-text">¡Gracias por escribirnos!</h2>
+  <p class="mb-6 text-center text-sm leading-relaxed text-body-text">
+    Recibimos tu mensaje con gusto. Un asesor de Mecánica Seriols se pondrá en contacto contigo muy pronto para
+    ayudarte con lo que necesites.
+  </p>
+  <form method="dialog">
     <button
-      type="button"
-      id="contact-success-close"
+      type="submit"
       class="w-full rounded-full bg-seriols-red px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-seriols-red-dark"
     >
       Entendido
     </button>
-  </div>
-</div>
+  </form>
+</dialog>
 
-<script define:vars={{ apiUrl, fieldClass, fieldErrorClass }}>
-  const form = document.getElementById('contact-form');
-  const submitBtn = document.getElementById('contact-form-submit');
-  const statusEl = document.getElementById('contact-form-status');
-  const modal = document.getElementById('contact-success-modal');
-  const modalBackdrop = document.getElementById('contact-success-backdrop');
-  const modalClose = document.getElementById('contact-success-close');
+<script define:vars={{ apiUrl }}>
+  function initContactForm() {
+    const form = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('contact-form-submit');
+    const statusEl = document.getElementById('contact-form-status');
+    const dialog = document.getElementById('contact-success-dialog');
 
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  const messages = {
-    name: 'Ingresa tu nombre.',
-    phone: 'Ingresa tu teléfono.',
-    email: 'Ingresa un email válido.',
-    carBrand: 'Indica la marca de tu auto.',
-    message: 'Escribe tu mensaje.',
-  };
-
-  /** @param {string} name */
-  function getInput(name) {
-    return form?.querySelector(`[data-input="${name}"]`);
-  }
-
-  /** @param {string} name */
-  function getErrorEl(name) {
-    return form?.querySelector(`[data-error="${name}"]`);
-  }
-
-  /** @param {string} name @param {string} message */
-  function showFieldError(name, message) {
-    const input = getInput(name);
-    const errorEl = getErrorEl(name);
-    if (!(input instanceof HTMLElement) || !(errorEl instanceof HTMLElement)) return;
-
-    input.classList.remove(fieldClass);
-    input.classList.add(fieldErrorClass);
-    input.setAttribute('aria-invalid', 'true');
-    errorEl.textContent = message;
-    errorEl.classList.remove('hidden');
-  }
-
-  /** @param {string} name */
-  function clearFieldError(name) {
-    const input = getInput(name);
-    const errorEl = getErrorEl(name);
-    if (!(input instanceof HTMLElement) || !(errorEl instanceof HTMLElement)) return;
-
-    input.classList.remove(fieldErrorClass);
-    input.classList.add(fieldClass);
-    input.setAttribute('aria-invalid', 'false');
-    errorEl.textContent = '';
-    errorEl.classList.add('hidden');
-  }
-
-  function clearAllFieldErrors() {
-    Object.keys(messages).forEach(clearFieldError);
-  }
-
-  /** @param {Record<string, string>} payload */
-  function validateForm(payload) {
-    clearAllFieldErrors();
-    let firstInvalid = null;
-
-    for (const [name, emptyMessage] of Object.entries(messages)) {
-      const value = payload[name] ?? '';
-      let invalid = !value;
-
-      if (name === 'email' && value && !emailPattern.test(value)) {
-        invalid = true;
-      }
-
-      if (invalid) {
-        showFieldError(name, emptyMessage);
-        if (!firstInvalid) firstInvalid = name;
-      }
+    if (!(form instanceof HTMLFormElement) || !(submitBtn instanceof HTMLButtonElement)) {
+      return;
     }
 
-    if (firstInvalid) {
-      const input = getInput(firstInvalid);
-      if (input instanceof HTMLElement) input.focus();
-      return false;
-    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const messages = {
+      name: 'Ingresa tu nombre.',
+      phone: 'Ingresa tu teléfono.',
+      email: 'Ingresa un email válido.',
+      carBrand: 'Indica la marca de tu auto.',
+      message: 'Escribe tu mensaje.',
+    };
 
-    return true;
-  }
+    const getInput = (name) => form.querySelector(`[data-input="${name}"]`);
+    const getErrorEl = (name) => form.querySelector(`[data-error="${name}"]`);
 
-  function openSuccessModal() {
-    if (!(modal instanceof HTMLElement)) return;
-    modal.hidden = false;
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    document.body.style.overflow = 'hidden';
-    modalClose?.focus();
-  }
+    const showFieldError = (name, message) => {
+      const input = getInput(name);
+      const errorEl = getErrorEl(name);
+      if (!(input instanceof HTMLElement) || !(errorEl instanceof HTMLElement)) return;
 
-  function closeSuccessModal() {
-    if (!(modal instanceof HTMLElement)) return;
-    modal.hidden = true;
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-    document.body.style.overflow = '';
-    submitBtn?.focus();
-  }
+      input.classList.add('is-invalid');
+      input.setAttribute('aria-invalid', 'true');
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+    };
 
-  if (
-    form instanceof HTMLFormElement &&
-    submitBtn instanceof HTMLButtonElement &&
-    statusEl &&
-    modal instanceof HTMLElement
-  ) {
+    const clearFieldError = (name) => {
+      const input = getInput(name);
+      const errorEl = getErrorEl(name);
+      if (!(input instanceof HTMLElement) || !(errorEl instanceof HTMLElement)) return;
+
+      input.classList.remove('is-invalid');
+      input.setAttribute('aria-invalid', 'false');
+      errorEl.textContent = '';
+      errorEl.classList.add('hidden');
+    };
+
+    const clearAllFieldErrors = () => {
+      Object.keys(messages).forEach(clearFieldError);
+    };
+
     const setStatus = (message, type) => {
+      if (!(statusEl instanceof HTMLElement)) return;
       statusEl.textContent = message;
       statusEl.classList.remove('hidden', 'text-seriols-red', 'text-body-text', 'text-green-700');
       statusEl.classList.add(
@@ -256,15 +182,44 @@ const fields = [
       );
     };
 
+    const validateForm = (payload) => {
+      clearAllFieldErrors();
+      let firstInvalid = null;
+
+      for (const [name, emptyMessage] of Object.entries(messages)) {
+        const value = payload[name] ?? '';
+        let invalid = !value;
+
+        if (name === 'email' && value && !emailPattern.test(value)) {
+          invalid = true;
+        }
+
+        if (invalid) {
+          showFieldError(name, emptyMessage);
+          if (!firstInvalid) firstInvalid = name;
+        }
+      }
+
+      if (firstInvalid) {
+        const input = getInput(firstInvalid);
+        if (input instanceof HTMLElement) input.focus();
+        return false;
+      }
+
+      return true;
+    };
+
     for (const name of Object.keys(messages)) {
       const input = getInput(name);
       input?.addEventListener('input', () => {
-        const value = input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement ? input.value.trim() : '';
+        const value =
+          input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement ? input.value.trim() : '';
         if (name === 'email' && value && !emailPattern.test(value)) return;
         if (value) clearFieldError(name);
       });
       input?.addEventListener('blur', () => {
-        const value = input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement ? input.value.trim() : '';
+        const value =
+          input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement ? input.value.trim() : '';
         if (!value) {
           showFieldError(name, messages[name]);
           return;
@@ -274,12 +229,6 @@ const fields = [
         }
       });
     }
-
-    modalClose?.addEventListener('click', closeSuccessModal);
-    modalBackdrop?.addEventListener('click', closeSuccessModal);
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !modal.hidden) closeSuccessModal();
-    });
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -298,9 +247,9 @@ const fields = [
         return;
       }
 
-      statusEl.classList.add('hidden');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Enviando…';
+      setStatus('Enviando tu mensaje…', 'info');
 
       try {
         const response = await fetch(apiUrl, {
@@ -318,8 +267,14 @@ const fields = [
 
         form.reset();
         clearAllFieldErrors();
-        statusEl.classList.add('hidden');
-        openSuccessModal();
+        if (statusEl instanceof HTMLElement) {
+          statusEl.textContent = '';
+          statusEl.classList.add('hidden');
+        }
+
+        if (dialog instanceof HTMLDialogElement) {
+          dialog.showModal();
+        }
       } catch {
         setStatus('Error de conexión. Verifica tu red e intenta de nuevo.', 'error');
       } finally {
@@ -327,5 +282,11 @@ const fields = [
         submitBtn.textContent = 'Enviar mensaje';
       }
     });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContactForm);
+  } else {
+    initContactForm();
   }
 </script>
