@@ -97,26 +97,28 @@ const fields = [
 </form>
 
 <dialog id="contact-success-dialog" class="contact-success-dialog" aria-labelledby="contact-success-title">
-  <div
-    class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-seriols-red/10 text-seriols-red"
-    aria-hidden="true"
-  >
-    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-    </svg>
+  <div class="contact-success-dialog__panel">
+    <div
+      class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-seriols-red/10 text-seriols-red"
+      aria-hidden="true"
+    >
+      <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+    </div>
+    <h2 id="contact-success-title" class="mb-3 text-center text-xl font-bold text-body-text">¡Gracias por escribirnos!</h2>
+    <p class="mb-6 text-center text-sm leading-relaxed text-body-text">
+      Recibimos tu mensaje con gusto. Un asesor de Mecánica Seriols se pondrá en contacto contigo muy pronto para
+      ayudarte con lo que necesites.
+    </p>
+    <button
+      type="button"
+      id="contact-success-close"
+      class="w-full rounded-full bg-seriols-red px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-seriols-red-dark"
+    >
+      Entendido
+    </button>
   </div>
-  <h2 id="contact-success-title" class="mb-3 text-center text-xl font-bold text-body-text">¡Gracias por escribirnos!</h2>
-  <p class="mb-6 text-center text-sm leading-relaxed text-body-text">
-    Recibimos tu mensaje con gusto. Un asesor de Mecánica Seriols se pondrá en contacto contigo muy pronto para
-    ayudarte con lo que necesites.
-  </p>
-  <button
-    type="button"
-    id="contact-success-close"
-    class="w-full rounded-full bg-seriols-red px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-seriols-red-dark"
-  >
-    Entendido
-  </button>
 </dialog>
 
 <script define:vars={{ apiUrl }}>
@@ -125,6 +127,7 @@ const fields = [
     const submitBtn = document.getElementById('contact-form-submit');
     const statusEl = document.getElementById('contact-form-status');
     const dialog = document.getElementById('contact-success-dialog');
+    const dialogPanel = dialog?.querySelector('.contact-success-dialog__panel');
 
     if (!(form instanceof HTMLFormElement) || !(submitBtn instanceof HTMLButtonElement)) {
       return;
@@ -226,13 +229,16 @@ const fields = [
     }
 
     const closeDialog = () => {
-      if (!(dialog instanceof HTMLDialogElement) || dialog.classList.contains('is-closing')) return;
+      if (!(dialog instanceof HTMLDialogElement) || !(dialogPanel instanceof HTMLElement)) return;
+      if (dialog.classList.contains('is-closing')) return;
 
       dialog.classList.add('is-closing');
-      dialog.addEventListener(
+      dialogPanel.classList.add('is-closing');
+      dialogPanel.addEventListener(
         'animationend',
         () => {
           dialog.classList.remove('is-closing');
+          dialogPanel.classList.remove('is-closing');
           dialog.close();
         },
         { once: true },
@@ -240,8 +246,9 @@ const fields = [
     };
 
     const openDialog = () => {
-      if (!(dialog instanceof HTMLDialogElement)) return;
+      if (!(dialog instanceof HTMLDialogElement) || !(dialogPanel instanceof HTMLElement)) return;
       dialog.classList.remove('is-closing');
+      dialogPanel.classList.remove('is-closing');
       dialog.showModal();
     };
 
