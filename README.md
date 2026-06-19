@@ -12,8 +12,8 @@ Producción: [https://mecanicaseriols.com](https://mecanicaseriols.com)
 | --- | --- |
 | `npm install` | Instala dependencias |
 | `npm run dev` | Servidor local en `http://localhost:4321/` |
-| `npm run build` | Build completo (Vercel + estáticos) |
-| `npm run build:static` | Build + copia a `static-output/` para CloudRay/Caddy |
+| `npm run build` | Build de producción → carpeta `dist/` |
+| `npm run build:static` | Alias de `npm run build` |
 | `npm run preview` | Previsualiza la build |
 
 ## Desarrollo local

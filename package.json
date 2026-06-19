@@ -7,8 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
-    "build:static": "astro build && node scripts/prepare-static.mjs",
+    "build": "astro build && node scripts/prepare-static.mjs",
+    "build:static": "npm run build",
     "preview": "astro preview",
     "astro": "astro",
     "images:webp": "node scripts/convert-webp.mjs"

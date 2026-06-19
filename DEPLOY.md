@@ -9,8 +9,16 @@ Repositorio: [github.com/escamilaweb/mecanicaseriols](https://github.com/escamil
 | Dominio | `https://mecanicaseriols.com` |
 | Rama | `main` |
 | Node.js | `>= 22.12.0` |
-| Build | `npm ci && npm run build:static` |
-| Carpeta a servir | `static-output/` |
+
+### Cloudflare Pages
+
+| Campo | Valor |
+| --- | --- |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Node.js | `22` (`.node-version` incluido) |
+
+El archivo `wrangler.toml` también define `pages_build_output_dir = "dist"`.
 
 ## CloudRay
 
@@ -53,8 +61,8 @@ RESEND_TO_EMAIL=agenda@mecanicaseriols.com
 cd /var/www/mecanicaseriols
 git pull origin main
 npm ci
-npm run build:static
-# Servir el contenido de static-output/ con Caddy, Nginx o Apache
+npm run build
+# Servir el contenido de dist/ con Caddy, Nginx, Cloudflare Pages, etc.
 ```
 
 ## Desarrollo local

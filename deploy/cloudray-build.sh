@@ -17,10 +17,10 @@ echo "Instalando dependencias..."
 npm ci
 
 echo "Generando build de producción..."
-npm run build:static
+npm run build
 
 echo "Publicando archivos estáticos..."
-sudo rsync -a --delete "{{ website_dir }}/static-output/" "{{ website_dir }}/public/"
+sudo rsync -a --delete "{{ website_dir }}/dist/" "{{ website_dir }}/public/"
 
 echo "Configurando Caddy..."
 sudo bash -c "cat > {{ caddyfile }}" <<EOF
