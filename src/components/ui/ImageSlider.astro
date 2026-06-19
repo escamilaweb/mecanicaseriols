@@ -56,9 +56,10 @@ function src(path: string) {
                 loading={i === 0 ? 'eager' : 'lazy'}
                 decoding="async"
                 draggable="false"
-                width="720"
-                height="405"
+                width="560"
+                height="315"
                 sizes="(max-width: 1024px) 100vw, 560px"
+                fetchpriority={i === 0 ? 'high' : 'auto'}
               />
               {
                 !isSubtle && (

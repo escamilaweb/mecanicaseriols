@@ -52,15 +52,15 @@ const directionsUrl = mapsDirectionsUrl();
         <h3 class="mb-4 font-mono text-xs uppercase tracking-widest text-seriols-gray-300">
           Datos del taller
         </h3>
-        <dl class="space-y-4 text-sm">
+        <div class="space-y-4 text-sm">
           <div>
-            <dt class="label-dark mb-1">Dirección</dt>
-            <dd class="text-white/90">{site.address}</dd>
+            <p class="label-dark mb-1">Dirección</p>
+            <p class="text-white/90">{site.address}</p>
           </div>
           <div class="grid gap-4 sm:grid-cols-2">
             <div>
-              <dt class="label-dark mb-1">WhatsApp</dt>
-              <dd>
+              <p class="label-dark mb-1">WhatsApp</p>
+              <p>
                 <a
                   href={`https://wa.me/52${site.whatsapp.replace(/\s/g, '')}`}
                   target="_blank"
@@ -72,11 +72,11 @@ const directionsUrl = mapsDirectionsUrl();
                   </svg>
                   {site.whatsapp}
                 </a>
-              </dd>
+              </p>
             </div>
             <div>
-              <dt class="label-dark mb-1">Oficina</dt>
-              <dd>
+              <p class="label-dark mb-1">Oficina</p>
+              <p>
                 <a
                   href={`tel:${site.phoneOffice.replace(/\s/g, '')}`}
                   class="inline-flex items-center gap-2 text-white/90 transition hover:text-white"
@@ -91,7 +91,7 @@ const directionsUrl = mapsDirectionsUrl();
                   </svg>
                   {site.phoneOffice}
                 </a>
-              </dd>
+              </p>
             </div>
           </div>
           <div class="flex flex-wrap gap-3 pt-2">
@@ -116,7 +116,7 @@ const directionsUrl = mapsDirectionsUrl();
               </svg>
             </a>
           </div>
-        </dl>
+        </div>
       </div>
     </div>
   </div>

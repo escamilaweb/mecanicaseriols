@@ -37,16 +37,18 @@ const icons: Record<string, string> = {
       <ul class="order-2 space-y-3 lg:order-1">
         {
           services.map(({ title, description }, i) => (
-            <ScrollReveal delay={i * 50}>
-              <li class="card-lift group rounded-xl border border-seriols-gray-300/50 border-l-2 border-l-transparent bg-white p-4 transition-colors duration-300 hover:border-seriols-red/30 hover:border-l-seriols-red/60 sm:p-5">
-                <div class="mb-2 flex items-start gap-2">
-                  <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-seriols-red/10 font-mono text-[11px] font-bold text-seriols-red">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <h3 class="text-[17px] font-bold leading-snug text-body-text">{title}</h3>
-                </div>
-                <p class="pl-7 text-[16px] leading-relaxed text-body-text">{description}</p>
-              </li>
+            <ScrollReveal
+              tag="li"
+              delay={i * 50}
+              class="card-lift group rounded-xl border border-seriols-gray-300/50 border-l-2 border-l-transparent bg-white p-4 transition-colors duration-300 hover:border-seriols-red/30 hover:border-l-seriols-red/60 sm:p-5"
+            >
+              <div class="mb-2 flex items-start gap-2">
+                <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-seriols-red/10 font-mono text-[11px] font-bold text-seriols-red">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 class="text-[17px] font-bold leading-snug text-body-text">{title}</h3>
+              </div>
+              <p class="pl-7 text-[16px] leading-relaxed text-body-text">{description}</p>
             </ScrollReveal>
           ))
         }
@@ -96,18 +98,16 @@ const icons: Record<string, string> = {
         <ul class="space-y-5">
           {
             specialServices.map(({ label, icon, description }, i) => (
-              <ScrollReveal delay={120 + i * 60}>
-                <li class="flex items-start gap-3.5">
-                  <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-seriols-dark">
-                    <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icons[icon]}></path>
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 class="text-[17px] font-semibold text-body-text">{label}</h3>
-                    <p class="mt-1 text-[16px] leading-relaxed text-body-text">{description}</p>
-                  </div>
-                </li>
+              <ScrollReveal tag="li" delay={120 + i * 60} class="flex items-start gap-3.5">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-seriols-dark">
+                  <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icons[icon]}></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-[17px] font-semibold text-body-text">{label}</h3>
+                  <p class="mt-1 text-[16px] leading-relaxed text-body-text">{description}</p>
+                </div>
               </ScrollReveal>
             ))
           }
