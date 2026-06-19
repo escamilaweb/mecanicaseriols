@@ -1,0 +1,2 @@
+# Redirige el dominio de preview de Cloudflare Pages al sitio canónico.
+https://mecanicaseriols.pages.dev/* https://mecanicaseriols.com/:splat 301
