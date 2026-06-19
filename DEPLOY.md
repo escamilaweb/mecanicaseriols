@@ -19,11 +19,11 @@ Sitio estático Astro en **`dist/`** + **Pages Function** para el formulario (`f
 4. **Functions:** la carpeta `functions/` se detecta sola (no moverla).
 5. **Variables** en Settings → Environment variables:
 
-| Variable | Tipo |
-| --- | --- |
-| `RESEND_API_KEY` | Secret |
-| `RESEND_FROM_EMAIL` | Text |
-| `RESEND_TO_EMAIL` | Text |
+| Variable | Tipo | Ejemplo |
+| --- | --- | --- |
+| `RESEND_API_KEY` | Secret | `re_xxxxxxxx` |
+| `RESEND_FROM_EMAIL` | Text | `hola@mecanicaseriols.com` (remitente verificado en Resend) |
+| `RESEND_TO_EMAIL` | Text | `agenda@mecanicaseriols.com` (donde llegan los mensajes del formulario) |
 
 6. Tras un push a `main`, haz **Retry deployment** si hace falta.
 
