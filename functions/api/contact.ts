@@ -1,27 +1,41 @@
-import { Resend } from 'resend';
-import type { APIRoute } from 'astro';
-
-export const prerender = false;
-
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const POST: APIRoute = async ({ request }) => {
-  if (request.headers.get('content-type')?.includes('application/json') !== true) {
+/** @param {string} value */
+function escapeHtml(value) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+/** @param {Record<string, unknown>} body */
+function parseForm(body) {
+  return {
+    name: String(body.name ?? '').trim(),
+    phone: String(body.phone ?? '').trim(),
+    email: String(body.email ?? '').trim(),
+    carBrand: String(body.carBrand ?? '').trim(),
+    message: String(body.message ?? '').trim(),
+  };
+}
+
+/** @type {import('@cloudflare/workers-types').PagesFunction} */
+export const onRequestPost = async (context) => {
+  const contentType = context.request.headers.get('content-type') ?? '';
+  if (!contentType.includes('application/json')) {
     return Response.json({ error: 'Solicitud inválida.' }, { status: 415 });
   }
 
-  let body: Record<string, unknown>;
+  let body;
   try {
-    body = await request.json();
+    body = await context.request.json();
   } catch {
     return Response.json({ error: 'No se pudo leer el formulario.' }, { status: 400 });
   }
 
-  const name = String(body.name ?? '').trim();
-  const phone = String(body.phone ?? '').trim();
-  const email = String(body.email ?? '').trim();
-  const carBrand = String(body.carBrand ?? '').trim();
-  const message = String(body.message ?? '').trim();
+  const { name, phone, email, carBrand, message } = parseForm(body);
 
   if (!name || !phone || !email || !carBrand || !message) {
     return Response.json({ error: 'Completa todos los campos obligatorios.' }, { status: 400 });
@@ -31,9 +45,9 @@ export const POST: APIRoute = async ({ request }) => {
     return Response.json({ error: 'El email no es válido.' }, { status: 400 });
   }
 
-  const apiKey = import.meta.env.RESEND_API_KEY;
-  const from = import.meta.env.RESEND_FROM_EMAIL;
-  const to = import.meta.env.RESEND_TO_EMAIL;
+  const apiKey = context.env.RESEND_API_KEY;
+  const from = context.env.RESEND_FROM_EMAIL;
+  const to = context.env.RESEND_TO_EMAIL;
 
   if (!apiKey || !from || !to) {
     return Response.json(
@@ -42,9 +56,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  const resend = new Resend(apiKey);
   const subject = `Nuevo contacto web — ${name}`;
-
   const html = `
     <h2>Nuevo mensaje desde mecanicaseriols.com</h2>
     <p><strong>Nombre:</strong> ${escapeHtml(name)}</p>
@@ -67,28 +79,26 @@ export const POST: APIRoute = async ({ request }) => {
     message,
   ].join('\n');
 
-  const { error } = await resend.emails.send({
-    from,
-    to,
-    replyTo: email,
-    subject,
-    html,
-    text,
+  const resendResponse = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from,
+      to,
+      reply_to: email,
+      subject,
+      html,
+      text,
+    }),
   });
 
-  if (error) {
-    console.error('Resend error:', error);
+  if (!resendResponse.ok) {
+    console.error('Resend error:', await resendResponse.text());
     return Response.json({ error: 'No se pudo enviar el mensaje. Intenta más tarde.' }, { status: 502 });
   }
 
   return Response.json({ ok: true });
 };
-
-function escapeHtml(value: string) {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}

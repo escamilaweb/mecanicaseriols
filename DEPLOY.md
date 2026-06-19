@@ -1,60 +1,57 @@
-# Despliegue — Cloudflare Workers & Pages
+# Despliegue — Cloudflare Pages
 
 Repositorio: [github.com/escamilaweb/mecanicaseriols](https://github.com/escamilaweb/mecanicaseriols)
 
-Producción: **Cloudflare Workers** (con assets estáticos en `dist/`).  
-El adaptador `@astrojs/cloudflare` genera assets en `dist/client/` y el Worker en `dist/server/` (configurado en `wrangler.toml`).
+Sitio estático Astro en **`dist/`** + **Pages Function** para el formulario (`functions/api/contact.ts`).
 
-## Cloudflare (GitHub → Workers)
+## Cloudflare Pages (GitHub)
 
-1. En [Cloudflare Dashboard](https://dash.cloudflare.com) → **Workers & Pages** → **Create** → **Connect to Git**.
-2. Repositorio: `escamilaweb/mecanicaseriols`, rama `main`.
-3. Configuración de build:
+1. **Workers & Pages** → tu proyecto → **Settings** → **Build**
+2. Configuración:
 
 | Campo | Valor |
 | --- | --- |
 | **Build command** | `npm run build` |
-| **Deploy command** | `npx wrangler deploy` |
-| **Node.js** | `22` (`.node-version` incluido) |
+| **Build output directory** | `dist` |
+| **Node.js** | `22` |
 
-> Si Cloudflare detecta Astro automáticamente, verifica que el output sea **`dist/`** y que use **Workers** (no el preset antiguo de Pages sin Worker).
+3. **No** uses `wrangler deploy` en Pages Git — el deploy es automático tras el build.
+4. **Functions:** la carpeta `functions/` se detecta sola (no moverla).
+5. **Variables** en Settings → Environment variables:
 
-4. **Dominio custom:** Workers & Pages → tu proyecto → **Custom domains** → `mecanicaseriols.com`.
+| Variable | Tipo |
+| --- | --- |
+| `RESEND_API_KEY` | Secret |
+| `RESEND_FROM_EMAIL` | Text |
+| `RESEND_TO_EMAIL` | Text |
 
-## Variables de entorno (formulario de contacto)
-
-Configura en **Settings → Variables and secrets** del Worker:
-
-| Variable | Tipo | Descripción |
-| --- | --- | --- |
-| `RESEND_API_KEY` | Secret | API key de [Resend](https://resend.com/api-keys) |
-| `RESEND_FROM_EMAIL` | Text | Remitente verificado (ej. `agenda@mecanicaseriols.com`) |
-| `RESEND_TO_EMAIL` | Text | Bandeja destino (`agenda@mecanicaseriols.com`) |
-
-Localmente, copia `.dev.vars.example` → `.dev.vars` (no se sube a Git).
+6. Tras un push a `main`, haz **Retry deployment** si hace falta.
 
 ## Comandos locales
 
 ```bash
 npm install
-npm run dev      # desarrollo con runtime Cloudflare (workerd)
-npm run build    # genera dist/ + Worker
-npm run preview  # preview local post-build
-npm run deploy   # build + wrangler deploy (requiere wrangler login)
+npm run dev
+npm run build
+npm run preview
+# Probar build + function de contacto:
+npm run build && npm run pages:dev
 ```
 
 ## Estructura del build
 
 ```
-dist/client/    ← HTML, CSS, JS e imágenes
-dist/server/    ← código del Worker
-wrangler.toml   ← main + assets (directory = ./dist/client)
+dist/                  ← HTML, CSS, imágenes (_headers incluido)
+functions/api/contact.ts  ← POST /api/contact/ (Resend)
 ```
 
-La ruta `/api/contact/` corre en el **Worker** (no es estática); el resto de páginas se prerenderizan.
+## PageSpeed / Lighthouse
 
-## Migración desde Vercel
+- `_headers` en `public/` → cache largo para `/_astro/*` e `/images/*`
+- Preload de `hero.webp` en la home (LCP)
+- Fuentes Google con carga diferida (`media="print"` + `onload`)
 
-- Eliminado `@astrojs/vercel` y `scripts/prepare-static.mjs`.
-- Eliminado workflow de GitHub Pages (`.github/workflows/deploy.yml`).
-- Ya no existe carpeta `.vercel/` en el proyecto.
+## Nota sobre el 404
+
+Si el build apuntaba a `dist/` pero Astro generaba en `dist/client/` (adaptador Workers), Cloudflare devolvía **404 text/plain**.  
+Este proyecto usa **build estático puro** → `dist/index.html` en la raíz.
