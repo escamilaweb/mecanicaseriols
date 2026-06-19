@@ -96,11 +96,7 @@ const fields = [
   </button>
 </form>
 
-<dialog
-  id="contact-success-dialog"
-  class="contact-success-dialog w-[min(100%,28rem)] rounded-2xl border border-seriols-gray-300/40 bg-white p-8 shadow-2xl backdrop:bg-seriols-dark/60"
-  aria-labelledby="contact-success-title"
->
+<dialog id="contact-success-dialog" class="contact-success-dialog" aria-labelledby="contact-success-title">
   <div
     class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-seriols-red/10 text-seriols-red"
     aria-hidden="true"
@@ -114,14 +110,13 @@ const fields = [
     Recibimos tu mensaje con gusto. Un asesor de Mecánica Seriols se pondrá en contacto contigo muy pronto para
     ayudarte con lo que necesites.
   </p>
-  <form method="dialog">
-    <button
-      type="submit"
-      class="w-full rounded-full bg-seriols-red px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-seriols-red-dark"
-    >
-      Entendido
-    </button>
-  </form>
+  <button
+    type="button"
+    id="contact-success-close"
+    class="w-full rounded-full bg-seriols-red px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-seriols-red-dark"
+  >
+    Entendido
+  </button>
 </dialog>
 
 <script define:vars={{ apiUrl }}>
@@ -230,6 +225,37 @@ const fields = [
       });
     }
 
+    const closeDialog = () => {
+      if (!(dialog instanceof HTMLDialogElement) || dialog.classList.contains('is-closing')) return;
+
+      dialog.classList.add('is-closing');
+      dialog.addEventListener(
+        'animationend',
+        () => {
+          dialog.classList.remove('is-closing');
+          dialog.close();
+        },
+        { once: true },
+      );
+    };
+
+    const openDialog = () => {
+      if (!(dialog instanceof HTMLDialogElement)) return;
+      dialog.classList.remove('is-closing');
+      dialog.showModal();
+    };
+
+    if (dialog instanceof HTMLDialogElement) {
+      document.getElementById('contact-success-close')?.addEventListener('click', closeDialog);
+      dialog.addEventListener('cancel', (event) => {
+        event.preventDefault();
+        closeDialog();
+      });
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) closeDialog();
+      });
+    }
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
 
@@ -273,7 +299,7 @@ const fields = [
         }
 
         if (dialog instanceof HTMLDialogElement) {
-          dialog.showModal();
+          openDialog();
         }
       } catch {
         setStatus('Error de conexión. Verifica tu red e intenta de nuevo.', 'error');

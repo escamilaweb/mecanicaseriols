@@ -26,19 +26,15 @@ function buildContactEmailHtml(data) {
       <td align="center" style="padding:32px 16px;">
         <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;border-collapse:collapse;">
           <tr>
-            <td style="background-color:#0d0e10;border-radius:16px 16px 0 0;padding:0;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td style="height:4px;background-color:#e20707;border-radius:16px 16px 0 0;font-size:0;line-height:0;">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td style="padding:28px 32px 24px;font-family:Inter,Arial,sans-serif;">
-                    <img src="https://mecanicaseriols.com/images/Seriols-logo.webp" width="160" alt="Mecánica Seriols" style="display:block;border:0;max-width:160px;height:auto;">
-                    <p style="margin:16px 0 0;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#d0d2d3;">Nuevo contacto web</p>
-                    <h1 style="margin:8px 0 0;font-size:24px;line-height:1.3;font-weight:700;color:#ffffff;">${escapeHtml(name)}</h1>
-                  </td>
-                </tr>
-              </table>
+            <td style="padding:0;background-color:#0d0e10;border-radius:16px 16px 0 0;overflow:hidden;">
+              <div style="height:4px;background-color:#e20707;font-size:0;line-height:0;">&#8203;</div>
+              <div style="padding:28px 32px 24px;font-family:Inter,Arial,sans-serif;">
+                <p style="margin:0;font-size:22px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;color:#ffffff;line-height:1.2;">
+                  Mecánica <span style="color:#e20707;">Seriols</span>
+                </p>
+                <p style="margin:14px 0 0;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#d0d2d3;">Nuevo contacto web</p>
+                <h1 style="margin:8px 0 0;font-size:24px;line-height:1.3;font-weight:700;color:#ffffff;">${escapeHtml(name)}</h1>
+              </div>
             </td>
           </tr>
           <tr>
