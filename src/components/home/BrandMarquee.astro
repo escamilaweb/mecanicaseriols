@@ -28,7 +28,7 @@ const row2 = brands.list.slice(midpoint);
         <div class="marquee-track animate-marquee-left flex shrink-0 gap-3 px-2">
           {
             [...row1, ...row1].map((brand) => (
-              <span class="shrink-0 rounded-full border border-seriols-gray-300/60 bg-seriols-light px-5 py-2 text-sm font-extrabold text-body-text">
+              <span class="brand-pill shrink-0 cursor-default rounded-full border border-seriols-gray-300/60 bg-seriols-light px-5 py-2 text-sm font-extrabold text-seriols-gray-700 transition-colors hover:border-seriols-gray-500/60 hover:text-seriols-gray-900">
                 {brand}
               </span>
             ))
@@ -44,7 +44,7 @@ const row2 = brands.list.slice(midpoint);
         <div class="marquee-track animate-marquee-right flex shrink-0 gap-3 px-2">
           {
             [...row2, ...row2].map((brand) => (
-              <span class="shrink-0 rounded-full border border-seriols-gray-300/60 bg-seriols-light px-5 py-2 text-sm font-extrabold text-body-text">
+              <span class="brand-pill shrink-0 cursor-default rounded-full border border-seriols-gray-300/60 bg-seriols-light px-5 py-2 text-sm font-extrabold text-seriols-gray-700 transition-colors hover:border-seriols-gray-500/60 hover:text-seriols-gray-900">
                 {brand}
               </span>
             ))

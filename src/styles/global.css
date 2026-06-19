@@ -93,7 +93,7 @@
     animation: marquee-right 100s linear infinite;
   }
 
-  .marquee-section:hover .marquee-track {
+  .marquee-section:has(.brand-pill:hover) .marquee-track {
     animation-play-state: paused;
   }
 
