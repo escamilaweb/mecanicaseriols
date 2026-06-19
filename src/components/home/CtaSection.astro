@@ -11,11 +11,11 @@ const directionsUrl = mapsDirectionsUrl();
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
       <div>
-        <p class="mb-2 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-seriols-red">
+        <p class="eyebrow-dark mb-2">
           Contacto directo
         </p>
         <h2 class="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">{cta.title}</h2>
-        <p class="mb-6 text-sm leading-relaxed text-white/60">{cta.note}</p>
+        <p class="mb-6 text-sm leading-relaxed text-white/75">{cta.note}</p>
         <div class="flex flex-wrap gap-3">
           <a
             href={`tel:${site.phone.replace(/\s/g, '')}`}
@@ -54,12 +54,12 @@ const directionsUrl = mapsDirectionsUrl();
         </h3>
         <dl class="space-y-4 text-sm">
           <div>
-            <dt class="mb-1 font-mono text-[10px] uppercase tracking-wider text-white/40">Dirección</dt>
+            <dt class="label-dark mb-1">Dirección</dt>
             <dd class="text-white/90">{site.address}</dd>
           </div>
           <div class="grid gap-4 sm:grid-cols-2">
             <div>
-              <dt class="mb-1 font-mono text-[10px] uppercase tracking-wider text-white/40">WhatsApp</dt>
+              <dt class="label-dark mb-1">WhatsApp</dt>
               <dd>
                 <a
                   href={`https://wa.me/52${site.whatsapp.replace(/\s/g, '')}`}
@@ -75,7 +75,7 @@ const directionsUrl = mapsDirectionsUrl();
               </dd>
             </div>
             <div>
-              <dt class="mb-1 font-mono text-[10px] uppercase tracking-wider text-white/40">Oficina</dt>
+              <dt class="label-dark mb-1">Oficina</dt>
               <dd>
                 <a
                   href={`tel:${site.phoneOffice.replace(/\s/g, '')}`}
@@ -108,7 +108,7 @@ const directionsUrl = mapsDirectionsUrl();
             </a>
             <a
               href={`${base}contacto/`}
-              class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-seriols-red transition hover:text-white"
+              class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-seriols-gray-300 transition hover:text-white"
             >
               Ver contacto completo
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

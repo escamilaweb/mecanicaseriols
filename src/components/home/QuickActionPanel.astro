@@ -26,19 +26,19 @@ const { diagnostics } = home;
           Panel de acción rápida
         </span>
       </div>
-      <span class="font-mono text-[10px] uppercase tracking-wider text-white/40">Live</span>
+      <span class="label-dark">Live</span>
     </div>
 
     <div class="space-y-4">
       <!-- RPM -->
       <div class="metric-row rounded-xl border border-white/5 bg-black/20 p-4 opacity-40 transition-opacity duration-500" data-metric="rpm">
-        <p class="mb-1 font-mono text-[10px] uppercase tracking-widest text-white/50">
+        <p class="mb-1 font-mono text-[11px] uppercase tracking-widest text-white/75">
           {diagnostics.rpm.label}
         </p>
         <div class="flex items-end justify-between gap-3">
           <p class="text-3xl font-bold tabular-nums text-white">
             <span class="metric-value" data-value="0">0</span>
-            <span class="ml-1 text-sm font-medium text-white/50">{diagnostics.rpm.unit}</span>
+            <span class="ml-1 text-sm font-medium text-white/75">{diagnostics.rpm.unit}</span>
           </p>
           <svg class="metric-graph h-8 w-16 text-seriols-red/30 transition-colors duration-500" viewBox="0 0 64 32" fill="none" aria-hidden="true">
             <path
@@ -54,13 +54,13 @@ const { diagnostics } = home;
 
       <!-- Oil pressure -->
       <div class="metric-row rounded-xl border border-white/5 bg-black/20 p-4 opacity-40 transition-opacity duration-500" data-metric="oil">
-        <p class="mb-1 font-mono text-[10px] uppercase tracking-widest text-white/50">
+        <p class="mb-1 font-mono text-[11px] uppercase tracking-widest text-white/75">
           {diagnostics.oil.label}
         </p>
         <div class="flex items-end justify-between gap-3">
           <p class="text-3xl font-bold tabular-nums text-white">
             <span class="metric-value" data-value="0">0.0</span>
-            <span class="ml-1 text-sm font-medium text-white/50">{diagnostics.oil.unit}</span>
+            <span class="ml-1 text-sm font-medium text-white/75">{diagnostics.oil.unit}</span>
           </p>
           <div class="metric-bars flex h-8 items-end gap-0.5 opacity-30 transition-opacity duration-500" aria-hidden="true">
             {
@@ -74,14 +74,14 @@ const { diagnostics } = home;
 
       <!-- OBD scan description -->
       <div class="metric-row rounded-xl border border-white/5 bg-black/20 p-4 opacity-40 transition-opacity duration-500" data-metric="scan">
-        <p class="mb-1 font-mono text-[10px] uppercase tracking-widest text-white/50">
+        <p class="mb-1 font-mono text-[11px] uppercase tracking-widest text-white/75">
           {diagnostics.scan.label}
         </p>
         <div class="flex items-end justify-between gap-3">
           <p class="text-xl font-bold text-white sm:text-2xl">
             <span class="metric-text opacity-0 transition-opacity duration-500">{diagnostics.scan.value}</span>
           </p>
-          <span class="font-mono text-[10px] uppercase text-white/50 opacity-0 transition-opacity duration-500 metric-unit">
+          <span class="font-mono text-[11px] uppercase text-white/75 opacity-0 transition-opacity duration-500 metric-unit">
             {diagnostics.scan.unit}
           </span>
         </div>
@@ -89,14 +89,14 @@ const { diagnostics } = home;
 
       <!-- Fault codes -->
       <div class="metric-row rounded-xl border border-white/5 bg-black/20 p-4 opacity-40 transition-opacity duration-500" data-metric="faults">
-        <p class="mb-1 font-mono text-[10px] uppercase tracking-widest text-white/50">
+        <p class="mb-1 font-mono text-[11px] uppercase tracking-widest text-white/75">
           {diagnostics.faults.label}
         </p>
         <div class="flex items-end justify-between gap-3">
           <p class="text-3xl font-bold tabular-nums text-green-400">
             <span class="metric-value" data-value="0">—</span>
           </p>
-          <span class="font-mono text-[10px] uppercase text-white/50 opacity-0 transition-opacity duration-500 metric-unit">
+          <span class="font-mono text-[11px] uppercase text-white/75 opacity-0 transition-opacity duration-500 metric-unit">
             {diagnostics.faults.unit}
           </span>
         </div>
