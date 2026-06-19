@@ -5,6 +5,8 @@ const { brands } = home;
 const midpoint = Math.ceil(brands.list.length / 2);
 const row1 = brands.list.slice(0, midpoint);
 const row2 = brands.list.slice(midpoint);
+const pillClass =
+  'brand-pill shrink-0 cursor-default rounded-full border border-seriols-gray-300/60 bg-seriols-light px-5 py-2 text-sm font-extrabold text-seriols-gray-700 transition-colors hover:border-seriols-light hover:bg-seriols-gray-700 hover:text-seriols-light';
 ---
 
 <section class="marquee-section overflow-hidden bg-white py-16 sm:py-20">
@@ -28,7 +30,7 @@ const row2 = brands.list.slice(midpoint);
         <div class="marquee-track animate-marquee-left flex shrink-0 gap-3 px-2">
           {
             [...row1, ...row1].map((brand) => (
-              <span class="brand-pill shrink-0 cursor-default rounded-full border border-seriols-gray-300/60 bg-seriols-light px-5 py-2 text-sm font-extrabold text-seriols-gray-700 transition-colors hover:border-seriols-gray-500/60 hover:text-seriols-gray-900">
+              <span class={pillClass}>
                 {brand}
               </span>
             ))
@@ -44,7 +46,7 @@ const row2 = brands.list.slice(midpoint);
         <div class="marquee-track animate-marquee-right flex shrink-0 gap-3 px-2">
           {
             [...row2, ...row2].map((brand) => (
-              <span class="brand-pill shrink-0 cursor-default rounded-full border border-seriols-gray-300/60 bg-seriols-light px-5 py-2 text-sm font-extrabold text-seriols-gray-700 transition-colors hover:border-seriols-gray-500/60 hover:text-seriols-gray-900">
+              <span class={pillClass}>
                 {brand}
               </span>
             ))
