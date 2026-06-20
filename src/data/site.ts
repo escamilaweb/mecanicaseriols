@@ -12,12 +12,12 @@ export const site = {
   schedule: 'Lunes a Viernes: 8:00 – 18:00',
   social: {
     facebook: {
-      handle: '@mecanicosseriols',
-      url: 'https://www.facebook.com/mecanicosseriols',
+      handle: '@mecanicaseriols',
+      url: 'https://www.facebook.com/mecanicaseriols',
     },
     instagram: {
-      handle: '@mecanicosseriols',
-      url: 'https://www.instagram.com/mecanicosseriols',
+      handle: '@mecanicaseriol',
+      url: 'https://www.instagram.com/mecanicaseriol',
     },
   },
 } as const;
