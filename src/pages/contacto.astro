@@ -56,7 +56,7 @@ const contactItems = [
   description="Contacta con Mecánica Seriols. Teléfono, WhatsApp, email, horario y ubicación del taller en Cuautitlán Izcalli."
   headerVariant="hero"
 >
-  <section class="contact-banner relative overflow-hidden border-b border-white/10 bg-seriols-dark py-16 sm:py-20">
+  <section class="contact-banner relative overflow-hidden border-b border-white/10 bg-seriols-dark">
     <div class="pointer-events-none absolute inset-0" aria-hidden="true">
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(226,7,7,0.12),transparent_45%)]"></div>
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_10%_90%,rgba(255,255,255,0.04),transparent_40%)]"></div>
@@ -252,6 +252,18 @@ const contactItems = [
 </BaseLayout>
 
 <style>
+  .contact-banner {
+    padding-top: calc(4.5rem + 30px);
+    padding-bottom: 4rem;
+  }
+
+  @media (min-width: 640px) {
+    .contact-banner {
+      padding-top: calc(5rem + 30px);
+      padding-bottom: 5rem;
+    }
+  }
+
   .contact-checkered {
     background-size: 16px 16px;
     mask-image: linear-gradient(to left, black 30%, transparent 95%);
