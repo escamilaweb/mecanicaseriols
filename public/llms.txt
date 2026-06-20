@@ -1,0 +1,34 @@
+# Mecánica Seriols
+
+> Taller de mecánica automotriz en Cuautitlán Izcalli, Estado de México. Ingenieros mecánicos egresados del IPN especializados en diagnóstico, mantenimiento y reparación de vehículos de combustión e híbridos.
+
+Atendemos particulares y flotillas empresariales. Garantía por escrito de 15 a 30 días. Horario: lunes a viernes de 8:00 a 18:00.
+
+## Páginas principales
+
+- [Inicio](https://mecanicaseriols.com/): Presentación del taller, servicios, marcas atendidas, preguntas frecuentes y contacto.
+- [Contacto](https://mecanicaseriols.com/contacto/): Teléfono, WhatsApp, email, horario, dirección, formulario y mapa del taller.
+
+## Servicios
+
+- [Catálogo de servicios](https://mecanicaseriols.com/#servicios): Mantenimiento, afinaciones, frenos, suspensiones, sistemas eléctricos, transmisiones, motor y más.
+- [Soluciones para empresas](https://mecanicaseriols.com/#empresas): Atención a flotillas, servicio a domicilio y garantía de servicio.
+
+## Contacto
+
+- Teléfono: [55 1654 6463](tel:+525516546463)
+- WhatsApp: [55 7837 3063](https://wa.me/525578373063)
+- Oficina: [55 5868 6652](tel:+525558686652)
+- Email: [agenda@mecanicaseriols.com](mailto:agenda@mecanicaseriols.com)
+- Dirección: Tlatlaya 13A Centro Urbano, 54700 Cuautitlán Izcalli, Estado de México
+- [Cómo llegar en Google Maps](https://www.google.com/maps/dir/?api=1&destination=Tlatlaya%2013A%20Centro%20Urbano%2C%2054700%20Cuautitl%C3%A1n%20Izcalli%2C%20Estado%20de%20M%C3%A9xico)
+
+## Redes sociales
+
+- [Facebook](https://www.facebook.com/mecanicaseriols): @mecanicaseriols
+- [Instagram](https://www.instagram.com/mecanicaseriol): @mecanicaseriol
+
+## Recursos
+
+- [Sitemap](https://mecanicaseriols.com/sitemap-index.xml): Índice de URLs públicas del sitio.
+- [robots.txt](https://mecanicaseriols.com/robots.txt): Reglas de rastreo para buscadores.
