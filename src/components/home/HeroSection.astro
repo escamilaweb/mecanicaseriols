@@ -8,10 +8,7 @@ const heroSrc = `${base}images/hero.webp`;
 const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.webp 1280w, ${heroSrc} 1600w`;
 ---
 
-<section
-  id="hero-section"
-  class="relative overflow-hidden"
->
+<section id="hero-section" class="hero-stage relative overflow-hidden">
   <div
     id="hero-parallax-wrap"
     class="relative flex min-h-0 items-center py-24 sm:py-28 md:py-32 lg:h-[750px] lg:max-h-[750px] lg:py-20"
@@ -36,7 +33,7 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
     <div class="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:h-full lg:px-8">
       <div class="grid items-center gap-10 lg:h-full lg:grid-cols-[minmax(0,13fr)_minmax(0,7fr)] lg:gap-8 xl:gap-10">
         <div class="w-full lg:max-w-none">
-          <p class="hero-enter-subtitle mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-seriols-gray-300 sm:text-[0.8125rem]">
+          <p class="hero-reveal hero-reveal--1 mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-seriols-gray-300 sm:text-[0.8125rem]">
             {hero.subtitle}
           </p>
 
@@ -45,9 +42,9 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
               hero.headline.map((line, i) => (
                 <span
                   class:list={[
-                    'hero-h1-line block',
-                    i === 0 && 'mb-1.5 hero-h1-line--primary',
-                    i === hero.headlineAccent && 'text-seriols-red hero-h1-line--accent',
+                    'hero-reveal block',
+                    i === 0 && 'mb-1.5 hero-reveal--2',
+                    i === hero.headlineAccent && 'text-seriols-red hero-reveal--3',
                   ]}
                 >
                   {line}
@@ -56,31 +53,31 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
             }
           </h1>
 
-          <p class="hero-enter-tagline mb-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/85 sm:text-base lg:text-lg">
+          <p class="hero-reveal hero-reveal--4 mb-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/85 sm:text-base lg:text-lg">
             {hero.tagline}
           </p>
 
-          <p class="hero-enter-desc mb-6 max-w-xl text-sm leading-relaxed text-white/70 sm:max-w-2xl sm:text-base lg:max-w-[90%]">
+          <p class="hero-reveal hero-reveal--5 mb-6 max-w-xl text-sm leading-relaxed text-white/70 sm:max-w-2xl sm:text-base lg:max-w-[90%]">
             {hero.description}
           </p>
 
-          <div class="hero-enter-ctas flex flex-wrap gap-3">
+          <div class="flex flex-wrap gap-3">
             <a
               href={`${base}contacto/`}
-              class="hero-enter-cta hero-enter-cta--primary inline-flex items-center rounded-full bg-seriols-gray-300 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-seriols-dark transition hover:bg-white sm:px-6 sm:py-3 sm:text-sm"
+              class="hero-reveal hero-reveal--6 inline-flex items-center rounded-full bg-seriols-gray-300 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-seriols-dark transition hover:bg-white sm:px-6 sm:py-3 sm:text-sm"
             >
               Pedir cita
             </a>
             <a
               href={`${base}#servicios`}
-              class="hero-enter-cta hero-enter-cta--secondary inline-flex items-center rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm transition hover:border-white/40 hover:bg-white/10 sm:px-6 sm:py-3 sm:text-sm"
+              class="hero-reveal hero-reveal--7 inline-flex items-center rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm transition hover:border-white/40 hover:bg-white/10 sm:px-6 sm:py-3 sm:text-sm"
             >
               Ver servicios
             </a>
           </div>
         </div>
 
-        <div class="flex justify-center pb-2 lg:justify-end lg:pb-0">
+        <div class="hero-reveal hero-reveal--8 flex justify-center pb-2 lg:justify-end lg:pb-0">
           <QuickActionPanel />
         </div>
       </div>
@@ -93,50 +90,73 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
   const heroWrap = document.getElementById('hero-parallax-wrap');
 
   if (heroSection && heroWrap) {
-    let ticking = false;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const updateHeroParallax = () => {
-      if (prefersReducedMotion) {
-        heroWrap.style.transform = '';
-        ticking = false;
-        return;
-      }
+    if (prefersReducedMotion) {
+      heroWrap.style.transform = '';
+    } else {
+      let smoothY = 0;
+      let smoothTilt = 0;
+      let smoothScale = 1;
+      let rafId = 0;
 
-      const rect = heroSection.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
+      const lerp = (current: number, target: number, factor: number) => current + (target - current) * factor;
 
-      if (rect.bottom <= 0 || rect.top >= viewportHeight) {
-        ticking = false;
-        return;
-      }
+      const tick = () => {
+        const rect = heroSection.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const heroHeight = Math.max(rect.height, 1);
+        const isVisible = rect.bottom > 0 && rect.top < viewportHeight;
 
-      const heroHeight = Math.max(rect.height, 1);
-      const scrolled = Math.max(0, -rect.top);
-      const progress = Math.min(1, scrolled / (heroHeight * 0.85));
+        if (!isVisible) {
+          rafId = 0;
+          return;
+        }
 
-      const translateY = progress * 18;
-      const tiltX = progress * 1.4;
+        const scrolled = Math.max(0, -rect.top);
+        const progress = Math.min(1, scrolled / (heroHeight * 0.72));
+        const eased = 1 - Math.pow(1 - progress, 1.6);
 
-      heroWrap.style.transform = `perspective(1600px) translate3d(0, ${translateY}px, 0) rotateX(${tiltX}deg)`;
-      ticking = false;
-    };
+        const targetY = eased * 28;
+        const targetTilt = eased * 2.2;
+        const targetScale = 1 - eased * 0.014;
 
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(updateHeroParallax);
-    };
+        smoothY = lerp(smoothY, targetY, 0.11);
+        smoothTilt = lerp(smoothTilt, targetTilt, 0.11);
+        smoothScale = lerp(smoothScale, targetScale, 0.11);
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    updateHeroParallax();
+        heroWrap.style.transform = `perspective(2000px) translate3d(0, ${smoothY.toFixed(2)}px, 0) rotateX(${smoothTilt.toFixed(3)}deg) scale(${smoothScale.toFixed(4)})`;
+
+        const settled =
+          Math.abs(targetY - smoothY) < 0.05 &&
+          Math.abs(targetTilt - smoothTilt) < 0.002 &&
+          Math.abs(targetScale - smoothScale) < 0.0002;
+
+        rafId = settled ? 0 : requestAnimationFrame(tick);
+      };
+
+      const requestTick = () => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(tick);
+      };
+
+      window.addEventListener('scroll', requestTick, { passive: true });
+      window.addEventListener('resize', requestTick, { passive: true });
+      requestTick();
+    }
   }
 </script>
 
 <style>
+  .hero-stage {
+    perspective: 2000px;
+    perspective-origin: 50% 38%;
+  }
+
   #hero-parallax-wrap {
-    transform-origin: center 42%;
+    transform-origin: 50% 46%;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
     will-change: transform;
   }
 
@@ -149,112 +169,72 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
     object-position: center;
   }
 
-  @keyframes hero-enter-up {
+  @keyframes hero-reveal {
     from {
       opacity: 0;
-      transform: translateY(1.25rem);
+      transform: translate3d(0, 0.65rem, 0);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translate3d(0, 0, 0);
     }
   }
 
-  @keyframes hero-enter-h1-primary {
-    from {
-      opacity: 0;
-      transform: translateY(2rem) scale(0.96);
-      letter-spacing: 0.08em;
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      letter-spacing: 0.02em;
-    }
-  }
-
-  @keyframes hero-enter-h1-accent {
-    from {
-      opacity: 0;
-      transform: translateY(1.5rem) translateX(-0.5rem) scale(0.98);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) translateX(0) scale(1);
-    }
-  }
-
-  @keyframes hero-enter-cta {
-    from {
-      opacity: 0;
-      transform: translateY(1rem) scale(0.94);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  .hero-enter-subtitle {
+  .hero-reveal {
     opacity: 0;
-    animation: hero-enter-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    animation-delay: 0.08s;
+    animation: hero-reveal 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   }
 
-  .hero-h1-line {
-    opacity: 0;
+  .hero-reveal--1 {
+    animation-delay: 0.06s;
   }
 
-  .hero-h1-line--primary {
-    animation: hero-enter-h1-primary 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: 0.18s;
+  .hero-reveal--2 {
+    animation-delay: 0.14s;
+    animation-duration: 1.28s;
   }
 
-  .hero-h1-line--accent {
-    animation: hero-enter-h1-accent 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: 0.42s;
+  .hero-reveal--3 {
+    animation-delay: 0.26s;
+    animation-duration: 1.28s;
   }
 
-  .hero-enter-tagline {
-    opacity: 0;
-    animation: hero-enter-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    animation-delay: 0.58s;
+  .hero-reveal--4 {
+    animation-delay: 0.38s;
   }
 
-  .hero-enter-desc {
-    opacity: 0;
-    animation: hero-enter-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  .hero-reveal--5 {
+    animation-delay: 0.5s;
+    animation-duration: 1.3s;
+  }
+
+  .hero-reveal--6 {
+    animation-delay: 0.62s;
+  }
+
+  .hero-reveal--7 {
     animation-delay: 0.72s;
   }
 
-  .hero-enter-cta {
-    opacity: 0;
-    animation: hero-enter-cta 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
-  .hero-enter-cta--primary {
-    animation-delay: 0.88s;
-  }
-
-  .hero-enter-cta--secondary {
-    animation-delay: 1s;
+  .hero-reveal--8 {
+    animation-delay: 0.82s;
+    animation-duration: 1.35s;
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .hero-stage {
+      perspective: none;
+    }
+
     #hero-parallax-wrap {
       transform: none !important;
       will-change: auto;
     }
 
-    .hero-enter-subtitle,
-    .hero-h1-line,
-    .hero-enter-tagline,
-    .hero-enter-desc,
-    .hero-enter-cta {
+    .hero-reveal {
       opacity: 1 !important;
       animation: none !important;
       transform: none !important;
-      letter-spacing: inherit;
     }
   }
 </style>
