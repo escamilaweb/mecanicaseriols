@@ -94,7 +94,6 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
 
   if (heroSection && heroWrap) {
     let ticking = false;
-    let lastScrollY = window.scrollY;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const updateHeroParallax = () => {
@@ -112,20 +111,14 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
         return;
       }
 
-      const scrollY = window.scrollY;
-      const scrollDelta = scrollY - lastScrollY;
-      lastScrollY = scrollY;
-
       const heroHeight = Math.max(rect.height, 1);
       const scrolled = Math.max(0, -rect.top);
-      const progress = Math.min(1, scrolled / (heroHeight * 0.9));
+      const progress = Math.min(1, scrolled / (heroHeight * 0.85));
 
-      const translateY = progress * 32;
-      const directionTilt = Math.max(-1.75, Math.min(1.75, scrollDelta * 0.06));
-      const progressTilt = progress * 2.25;
-      const tiltX = progressTilt + directionTilt;
+      const translateY = progress * 18;
+      const tiltX = progress * 1.4;
 
-      heroWrap.style.transform = `perspective(1400px) translate3d(0, ${translateY}px, 0) rotateX(${tiltX}deg)`;
+      heroWrap.style.transform = `perspective(1600px) translate3d(0, ${translateY}px, 0) rotateX(${tiltX}deg)`;
       ticking = false;
     };
 
@@ -143,7 +136,7 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
 
 <style>
   #hero-parallax-wrap {
-    transform-origin: center center;
+    transform-origin: center 42%;
     will-change: transform;
   }
 
@@ -170,14 +163,12 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
   @keyframes hero-enter-h1-primary {
     from {
       opacity: 0;
-      transform: translateY(2.75rem) scale(0.93);
-      filter: blur(8px);
-      letter-spacing: 0.1em;
+      transform: translateY(2rem) scale(0.96);
+      letter-spacing: 0.08em;
     }
     to {
       opacity: 1;
       transform: translateY(0) scale(1);
-      filter: blur(0);
       letter-spacing: 0.02em;
     }
   }
@@ -185,13 +176,11 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
   @keyframes hero-enter-h1-accent {
     from {
       opacity: 0;
-      transform: translateY(2rem) translateX(-0.75rem) scale(0.97);
-      filter: blur(4px);
+      transform: translateY(1.5rem) translateX(-0.5rem) scale(0.98);
     }
     to {
       opacity: 1;
       transform: translateY(0) translateX(0) scale(1);
-      filter: blur(0);
     }
   }
 
@@ -265,7 +254,6 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
       opacity: 1 !important;
       animation: none !important;
       transform: none !important;
-      filter: none !important;
       letter-spacing: inherit;
     }
   }

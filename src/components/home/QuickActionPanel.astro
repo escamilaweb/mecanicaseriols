@@ -234,6 +234,7 @@ const { diagnostics } = home;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
+    const smartphoneQuery = window.matchMedia('(max-width: 1023px)');
     let started = false;
 
     const startPanel = () => {
@@ -243,18 +244,31 @@ const { diagnostics } = home;
       runDiagnosticSequence(panel as HTMLElement);
     };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          startPanel();
-          observer.disconnect();
-        });
-      },
-      { threshold: 0.2, rootMargin: '0px 0px -8% 0px' },
-    );
+    const setupObserver = () => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            startPanel();
+            observer.disconnect();
+          });
+        },
+        { threshold: 0.2, rootMargin: '0px 0px -8% 0px' },
+      );
 
-    observer.observe(panel);
+      observer.observe(panel);
+      return observer;
+    };
+
+    if (smartphoneQuery.matches) {
+      setupObserver();
+    } else {
+      startPanel();
+    }
+
+    smartphoneQuery.addEventListener('change', (event) => {
+      if (!event.matches && !started) startPanel();
+    });
   });
 </script>
 
