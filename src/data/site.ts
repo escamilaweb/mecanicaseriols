@@ -16,8 +16,8 @@ export const site = {
       url: 'https://www.facebook.com/mecanicaseriols',
     },
     instagram: {
-      handle: '@mecanicaseriol',
-      url: 'https://www.instagram.com/mecanicaseriol',
+      handle: '@mecanicaseriols',
+      url: 'https://www.instagram.com/mecanicaseriols/',
     },
   },
 } as const;

@@ -5,7 +5,7 @@ export const gallerySections = {
     alt: 'Diagnóstico y reparación automotriz en Mecánica Seriols',
     images: [
       `${base}/gallery-seriols (12).webp`,
-      `${base}/gallery-seriols (36).webp`,
+      `${base}/gallery-seriols (4).webp`,
       `${base}/gallery-seriols (55).webp`,
     ],
   },
@@ -13,8 +13,8 @@ export const gallerySections = {
     alt: 'Atención personalizada en Mecánica Seriols',
     images: [
       `${base}/gallery-seriols (62).webp`,
-      `${base}/gallery-seriols (40).webp`,
-      `${base}/gallery-seriols (30).webp`,
+      `${base}/gallery-seriols (3).webp`,
+      `${base}/gallery-seriols (2).webp`,
     ],
   },
 } as const;
