@@ -95,6 +95,7 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
     if (prefersReducedMotion) {
       heroWrap.style.transform = '';
     } else {
+      const desktopQuery = window.matchMedia('(min-width: 1024px)');
       let smoothY = 0;
       let smoothTilt = 0;
       let smoothScale = 1;
@@ -102,7 +103,23 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
 
       const lerp = (current: number, target: number, factor: number) => current + (target - current) * factor;
 
+      const resetParallax = () => {
+        smoothY = 0;
+        smoothTilt = 0;
+        smoothScale = 1;
+        heroWrap.style.transform = '';
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = 0;
+        }
+      };
+
       const tick = () => {
+        if (!desktopQuery.matches) {
+          resetParallax();
+          return;
+        }
+
         const rect = heroSection.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         const heroHeight = Math.max(rect.height, 1);
@@ -142,6 +159,10 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
 
       window.addEventListener('scroll', requestTick, { passive: true });
       window.addEventListener('resize', requestTick, { passive: true });
+      desktopQuery.addEventListener('change', () => {
+        if (!desktopQuery.matches) resetParallax();
+        else requestTick();
+      });
       requestTick();
     }
   }
@@ -151,6 +172,17 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
   .hero-stage {
     perspective: 2000px;
     perspective-origin: 50% 38%;
+  }
+
+  @media (max-width: 1023px) {
+    .hero-stage {
+      perspective: none;
+    }
+
+    #hero-parallax-wrap {
+      transform: none !important;
+      will-change: auto;
+    }
   }
 
   #hero-parallax-wrap {
