@@ -18,8 +18,8 @@ const { diagnostics } = home;
   <div class="relative">
     <div class="mb-5 flex items-center justify-between border-b border-white/10 pb-4">
       <div class="flex items-center gap-2">
-        <span class="relative flex h-2 w-2">
-          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-60"></span>
+        <span class="live-indicator relative flex h-2 w-2">
+          <span class="live-indicator-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60"></span>
           <span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
         </span>
         <span class="text-xs font-semibold uppercase tracking-widest text-white/90">
@@ -231,11 +231,49 @@ const { diagnostics } = home;
   }
 
   document.querySelectorAll('.diagnostic-panel').forEach((panel) => {
-    runDiagnosticSequence(panel as HTMLElement);
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    let started = false;
+
+    const startPanel = () => {
+      if (started) return;
+      started = true;
+      panel.classList.add('is-active');
+      runDiagnosticSequence(panel as HTMLElement);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          startPanel();
+          observer.disconnect();
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -8% 0px' },
+    );
+
+    observer.observe(panel);
   });
 </script>
 
 <style>
+  .diagnostic-panel .scan-line,
+  .diagnostic-panel .live-indicator-ping {
+    animation-play-state: paused;
+  }
+
+  .diagnostic-panel.is-active .scan-line {
+    animation: scan-line 4s ease-in-out infinite;
+    animation-play-state: running;
+  }
+
+  .diagnostic-panel.is-active .live-indicator-ping {
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    animation-play-state: running;
+  }
+
   @keyframes scan-line {
     0% {
       top: 0;
@@ -251,10 +289,6 @@ const { diagnostics } = home;
       top: 100%;
       opacity: 0;
     }
-  }
-
-  .scan-line {
-    animation: scan-line 4s ease-in-out infinite;
   }
 
   @keyframes bar-pulse {

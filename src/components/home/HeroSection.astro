@@ -10,66 +10,79 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
 
 <section
   id="hero-section"
-  class="relative flex min-h-0 items-center overflow-hidden py-24 sm:py-28 md:py-32 lg:h-[750px] lg:max-h-[750px] lg:py-20"
+  class="relative overflow-hidden"
 >
-  <div class="absolute inset-0 overflow-hidden">
-    <img
-      id="hero-bg-image"
-      src={heroSrc}
-      srcset={heroSrcSet}
-      alt={hero.imageAlt}
-      class="hero-parallax-img"
-      fetchpriority="high"
-      width="1280"
-      height="720"
-      sizes="100vw"
-      decoding="async"
-    />
-    <div class="absolute inset-0 bg-gradient-to-r from-seriols-dark/95 via-seriols-dark/75 to-seriols-dark/40"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-seriols-dark/80 via-transparent to-seriols-dark/30"></div>
-  </div>
+  <div
+    id="hero-parallax-wrap"
+    class="relative flex min-h-0 items-center py-24 sm:py-28 md:py-32 lg:h-[750px] lg:max-h-[750px] lg:py-20"
+  >
+    <div class="absolute inset-0 overflow-hidden">
+      <img
+        id="hero-bg-image"
+        src={heroSrc}
+        srcset={heroSrcSet}
+        alt={hero.imageAlt}
+        class="hero-bg-img"
+        fetchpriority="high"
+        width="1280"
+        height="720"
+        sizes="100vw"
+        decoding="async"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-seriols-dark/95 via-seriols-dark/75 to-seriols-dark/40"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-seriols-dark/80 via-transparent to-seriols-dark/30"></div>
+    </div>
 
-  <div class="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:h-full lg:px-8">
-    <div class="grid items-center gap-10 lg:h-full lg:grid-cols-[minmax(0,13fr)_minmax(0,7fr)] lg:gap-8 xl:gap-10">
-      <div class="w-full lg:max-w-none">
-        <p class="mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-seriols-gray-300 sm:text-[0.8125rem]">
-          {hero.subtitle}
-        </p>
+    <div class="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:h-full lg:px-8">
+      <div class="grid items-center gap-10 lg:h-full lg:grid-cols-[minmax(0,13fr)_minmax(0,7fr)] lg:gap-8 xl:gap-10">
+        <div class="w-full lg:max-w-none">
+          <p class="hero-enter-subtitle mb-3 font-mono text-xs font-medium uppercase tracking-[0.2em] text-seriols-gray-300 sm:text-[0.8125rem]">
+            {hero.subtitle}
+          </p>
 
-        <h1 class="mb-4 max-w-[95%] text-[1.75rem] font-black uppercase leading-[1.1] tracking-[0.02em] text-white sm:text-4xl sm:leading-[1.08] lg:text-[2.625rem] lg:leading-[1.06] xl:text-5xl xl:leading-[1.05] 2xl:text-[3.35rem]">
-          {
-            hero.headline.map((line, i) => (
-              <span class:list={['block', i === 0 && 'mb-1.5', i === hero.headlineAccent && 'text-seriols-red']}>{line}</span>
-            ))
-          }
-        </h1>
+          <h1 class="mb-4 max-w-[95%] text-[1.75rem] font-black uppercase leading-[1.1] tracking-[0.02em] text-white sm:text-4xl sm:leading-[1.08] lg:text-[2.625rem] lg:leading-[1.06] xl:text-5xl xl:leading-[1.05] 2xl:text-[3.35rem]">
+            {
+              hero.headline.map((line, i) => (
+                <span
+                  class:list={[
+                    'hero-h1-line block',
+                    i === 0 && 'mb-1.5 hero-h1-line--primary',
+                    i === hero.headlineAccent && 'text-seriols-red hero-h1-line--accent',
+                  ]}
+                >
+                  {line}
+                </span>
+              ))
+            }
+          </h1>
 
-        <p class="mb-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/85 sm:text-base lg:text-lg">
-          {hero.tagline}
-        </p>
+          <p class="hero-enter-tagline mb-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/85 sm:text-base lg:text-lg">
+            {hero.tagline}
+          </p>
 
-        <p class="mb-6 max-w-xl text-sm leading-relaxed text-white/70 sm:max-w-2xl sm:text-base lg:max-w-[90%]">
-          {hero.description}
-        </p>
+          <p class="hero-enter-desc mb-6 max-w-xl text-sm leading-relaxed text-white/70 sm:max-w-2xl sm:text-base lg:max-w-[90%]">
+            {hero.description}
+          </p>
 
-        <div class="flex flex-wrap gap-3">
-          <a
-            href={`${base}contacto/`}
-            class="inline-flex items-center rounded-full bg-seriols-gray-300 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-seriols-dark transition hover:bg-white sm:px-6 sm:py-3 sm:text-sm"
-          >
-            Pedir cita
-          </a>
-          <a
-            href={`${base}#servicios`}
-            class="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm transition hover:border-white/40 hover:bg-white/10 sm:px-6 sm:py-3 sm:text-sm"
-          >
-            Ver servicios
-          </a>
+          <div class="hero-enter-ctas flex flex-wrap gap-3">
+            <a
+              href={`${base}contacto/`}
+              class="hero-enter-cta hero-enter-cta--primary inline-flex items-center rounded-full bg-seriols-gray-300 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-seriols-dark transition hover:bg-white sm:px-6 sm:py-3 sm:text-sm"
+            >
+              Pedir cita
+            </a>
+            <a
+              href={`${base}#servicios`}
+              class="hero-enter-cta hero-enter-cta--secondary inline-flex items-center rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm transition hover:border-white/40 hover:bg-white/10 sm:px-6 sm:py-3 sm:text-sm"
+            >
+              Ver servicios
+            </a>
+          </div>
         </div>
-      </div>
 
-      <div class="flex justify-center pb-2 lg:justify-end lg:pb-0">
-        <QuickActionPanel />
+        <div class="flex justify-center pb-2 lg:justify-end lg:pb-0">
+          <QuickActionPanel />
+        </div>
       </div>
     </div>
   </div>
@@ -77,14 +90,16 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
 
 <script>
   const heroSection = document.getElementById('hero-section');
-  const heroBg = document.getElementById('hero-bg-image');
+  const heroWrap = document.getElementById('hero-parallax-wrap');
 
-  if (heroSection && heroBg) {
+  if (heroSection && heroWrap) {
     let ticking = false;
+    let lastScrollY = window.scrollY;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const updateHeroMotion = () => {
+    const updateHeroParallax = () => {
       if (prefersReducedMotion) {
+        heroWrap.style.transform = '';
         ticking = false;
         return;
       }
@@ -97,53 +112,161 @@ const heroSrcSet = `${base}images/hero-800.webp 800w, ${base}images/hero-1280.we
         return;
       }
 
+      const scrollY = window.scrollY;
+      const scrollDelta = scrollY - lastScrollY;
+      lastScrollY = scrollY;
+
       const heroHeight = Math.max(rect.height, 1);
       const scrolled = Math.max(0, -rect.top);
-      const scrollRange = heroHeight + viewportHeight * 0.35;
-      const progress = Math.min(1, scrolled / scrollRange);
+      const progress = Math.min(1, scrolled / (heroHeight * 0.9));
 
-      const yPercent = 5 - progress * 14;
-      const scale = 1.08 + progress * 0.1;
+      const translateY = progress * 32;
+      const directionTilt = Math.max(-1.75, Math.min(1.75, scrollDelta * 0.06));
+      const progressTilt = progress * 2.25;
+      const tiltX = progressTilt + directionTilt;
 
-      heroBg.style.setProperty('--hero-y', `${yPercent}%`);
-      heroBg.style.setProperty('--hero-scale', scale.toFixed(4));
+      heroWrap.style.transform = `perspective(1400px) translate3d(0, ${translateY}px, 0) rotateX(${tiltX}deg)`;
       ticking = false;
     };
 
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
-      requestAnimationFrame(updateHeroMotion);
+      requestAnimationFrame(updateHeroParallax);
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
-    updateHeroMotion();
+    updateHeroParallax();
   }
 </script>
 
 <style>
-  .hero-parallax-img {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 100%;
-    height: 135%;
-    max-width: none;
-    object-fit: cover;
-    object-position: center;
+  #hero-parallax-wrap {
     transform-origin: center center;
     will-change: transform;
-    --hero-y: 5%;
-    --hero-scale: 1.08;
-    transform: translate3d(0, calc(-50% + var(--hero-y)), 0) scale(var(--hero-scale));
+  }
+
+  .hero-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  @keyframes hero-enter-up {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes hero-enter-h1-primary {
+    from {
+      opacity: 0;
+      transform: translateY(2.75rem) scale(0.93);
+      filter: blur(8px);
+      letter-spacing: 0.1em;
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+      letter-spacing: 0.02em;
+    }
+  }
+
+  @keyframes hero-enter-h1-accent {
+    from {
+      opacity: 0;
+      transform: translateY(2rem) translateX(-0.75rem) scale(0.97);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) translateX(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes hero-enter-cta {
+    from {
+      opacity: 0;
+      transform: translateY(1rem) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .hero-enter-subtitle {
+    opacity: 0;
+    animation: hero-enter-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: 0.08s;
+  }
+
+  .hero-h1-line {
+    opacity: 0;
+  }
+
+  .hero-h1-line--primary {
+    animation: hero-enter-h1-primary 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.18s;
+  }
+
+  .hero-h1-line--accent {
+    animation: hero-enter-h1-accent 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.42s;
+  }
+
+  .hero-enter-tagline {
+    opacity: 0;
+    animation: hero-enter-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: 0.58s;
+  }
+
+  .hero-enter-desc {
+    opacity: 0;
+    animation: hero-enter-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: 0.72s;
+  }
+
+  .hero-enter-cta {
+    opacity: 0;
+    animation: hero-enter-cta 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .hero-enter-cta--primary {
+    animation-delay: 0.88s;
+  }
+
+  .hero-enter-cta--secondary {
+    animation-delay: 1s;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-parallax-img {
-      top: 0;
-      height: 100%;
-      transform: none;
+    #hero-parallax-wrap {
+      transform: none !important;
+      will-change: auto;
+    }
+
+    .hero-enter-subtitle,
+    .hero-h1-line,
+    .hero-enter-tagline,
+    .hero-enter-desc,
+    .hero-enter-cta {
+      opacity: 1 !important;
+      animation: none !important;
+      transform: none !important;
+      filter: none !important;
+      letter-spacing: inherit;
     }
   }
 </style>
