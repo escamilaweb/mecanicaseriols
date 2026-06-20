@@ -43,7 +43,7 @@ const navLinkClass = (href: string) =>
       />
     </a>
 
-    <nav aria-label="Navegación principal" class="hidden items-center gap-1 md:flex">
+    <nav aria-label="Navegación principal" class="hidden items-center gap-1 lg:flex">
       {
         navLinks.map(({ href, label }) => (
           <a href={navHref(href, base)} class:list={[navLinkClass(href), 'px-3 py-2']}>
@@ -58,9 +58,6 @@ const navLinkClass = (href: string) =>
     </nav>
 
     <div class="flex shrink-0 items-center gap-2">
-      <div class="hidden md:block lg:hidden">
-        <SocialLinks variant="header" />
-      </div>
       <a
         href={`${base}contacto/`}
         class="header-cta hidden rounded-full bg-seriols-red px-4 py-2 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-seriols-red-dark sm:inline-flex"
@@ -71,7 +68,7 @@ const navLinkClass = (href: string) =>
       <button
         type="button"
         id="nav-toggle"
-        class="header-menu-btn inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white transition-colors hover:text-white md:hidden"
+        class="header-menu-btn inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/20 text-white transition-colors hover:text-white lg:hidden"
         aria-expanded="false"
         aria-controls="mobile-nav"
         aria-label="Abrir menú de navegación"
@@ -88,7 +85,7 @@ const navLinkClass = (href: string) =>
 
   <nav
     id="mobile-nav"
-    class="hidden border-t border-white/10 bg-seriols-dark/95 backdrop-blur-md md:hidden"
+    class="hidden border-t border-white/10 bg-seriols-dark/95 backdrop-blur-md lg:hidden"
     aria-label="Navegación móvil"
   >
     <div class="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3 sm:px-6">
@@ -101,7 +98,7 @@ const navLinkClass = (href: string) =>
       }
       <a
         href={`${base}contacto/`}
-        class="mt-2 inline-flex justify-center rounded-full bg-seriols-red px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-seriols-red-dark sm:hidden"
+        class="mt-2 inline-flex justify-center rounded-full bg-seriols-red px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-seriols-red-dark lg:hidden"
         data-nav-link
       >
         Pedir cita
@@ -187,7 +184,7 @@ const navLinkClass = (href: string) =>
       link.addEventListener('click', () => setOpen(false));
     });
 
-    window.matchMedia('(min-width: 768px)').addEventListener('change', (event) => {
+    window.matchMedia('(min-width: 1024px)').addEventListener('change', (event) => {
       if (event.matches) setOpen(false);
     });
   }
