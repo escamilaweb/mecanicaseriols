@@ -1,3 +1,17 @@
+export const siteLocation = {
+  streetAddress: 'Tlatlaya 13A Centro Urbano',
+  postalCode: '54700',
+  addressLocality: 'Cuautitlán Izcalli',
+  addressRegion: 'Estado de México',
+  addressCountry: 'MX',
+  latitude: 19.6542,
+  longitude: -99.2103,
+} as const;
+
+export function formatSiteAddress(location: typeof siteLocation = siteLocation) {
+  return `${location.streetAddress}, ${location.postalCode} ${location.addressLocality}, ${location.addressRegion}`;
+}
+
 export const site = {
   name: 'Mecánica Seriols',
   description:
@@ -8,7 +22,8 @@ export const site = {
   phoneOffice: '55 5868 6652',
   whatsapp: '55 7837 3063',
   email: 'agenda@mecanicaseriols.com',
-  address: 'Tlatlaya 13A Centro Urbano, 54700 Cuautitlán Izcalli, Estado de México',
+  location: siteLocation,
+  address: formatSiteAddress(siteLocation),
   schedule: 'Lunes a Viernes: 8:00 – 18:00',
   social: {
     facebook: {
@@ -24,6 +39,10 @@ export const site = {
 
 export function mapsDirectionsUrl(address: string = site.address) {
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+}
+
+export function mapsPlaceUrl(address: string = site.address) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
 export function mapsEmbedUrl(address: string = site.address) {

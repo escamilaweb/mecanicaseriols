@@ -1,4 +1,4 @@
-import { site } from './site';
+import { mapsPlaceUrl, site } from './site';
 
 export const seo = {
   defaultTitle: 'Mecánica Seriols | Taller mecánico en Cuautitlán Izcalli',
@@ -12,9 +12,9 @@ export const seo = {
     'mecánica automotriz, taller mecánico, Cuautitlán Izcalli, diagnóstico automotriz, reparación de autos, vehículos híbridos, mantenimiento automotriz, Estado de México',
   geo: {
     region: 'MX-MEX',
-    placename: 'Cuautitlán Izcalli, Estado de México',
-    latitude: 19.6542,
-    longitude: -99.2103,
+    placename: `${site.location.addressLocality}, ${site.location.addressRegion}`,
+    latitude: site.location.latitude,
+    longitude: site.location.longitude,
   },
 } as const;
 
@@ -50,16 +50,17 @@ export function localBusinessJsonLd(baseUrl: string = site.url) {
     email: site.email,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Tlatlaya 13A Centro Urbano',
-      addressLocality: 'Cuautitlán Izcalli',
-      addressRegion: 'Estado de México',
-      postalCode: '54700',
-      addressCountry: 'MX',
+      streetAddress: site.location.streetAddress,
+      addressLocality: site.location.addressLocality,
+      addressRegion: site.location.addressRegion,
+      postalCode: site.location.postalCode,
+      addressCountry: site.location.addressCountry,
     },
+    hasMap: mapsPlaceUrl(),
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: seo.geo.latitude,
-      longitude: seo.geo.longitude,
+      latitude: site.location.latitude,
+      longitude: site.location.longitude,
     },
     openingHoursSpecification: [
       {
@@ -72,11 +73,11 @@ export function localBusinessJsonLd(baseUrl: string = site.url) {
     areaServed: [
       {
         '@type': 'City',
-        name: 'Cuautitlán Izcalli',
+        name: site.location.addressLocality,
       },
       {
         '@type': 'AdministrativeArea',
-        name: 'Estado de México',
+        name: site.location.addressRegion,
       },
     ],
     sameAs: [site.social.facebook.url, site.social.instagram.url],
