@@ -31,6 +31,7 @@ const canonical = pageCanonical(Astro.url.pathname, site.url);
 const ogImageUrl = absoluteUrl(ogImage, site.url);
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 const { gaMeasurementId } = seo;
+const assetBase = import.meta.env.BASE_URL;
 const structuredData = includeWebsiteSchema
   ? [localBusinessJsonLd(site.url), websiteJsonLd(site.url)]
   : [localBusinessJsonLd(site.url)];
@@ -61,7 +62,9 @@ const structuredData = includeWebsiteSchema
       gtag('config', gaMeasurementId);
     </script>
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon-ms.svg`} />
+    <link rel="icon" href={`${assetBase}favicon.ico`} sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href={`${assetBase}favicon-ms.svg`} />
+    <link rel="apple-touch-icon" href={`${assetBase}apple-touch-icon.png`} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:locale" content={seo.locale} />
