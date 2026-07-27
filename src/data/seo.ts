@@ -2,6 +2,7 @@ import { site } from './site';
 
 export const seo = {
   defaultTitle: 'Mecánica Seriols | Taller mecánico en Cuautitlán Izcalli',
+  gaMeasurementId: 'G-Y0YD4BG7GR',
   ogImagePath: '/images/hero-og.jpg',
   ogImageWidth: 1200,
   ogImageHeight: 704,

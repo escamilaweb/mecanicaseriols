@@ -59,6 +59,41 @@ functions/api/contact.ts  ← POST /api/contact/ (Resend)
 - Validación y límites de longitud en `functions/lib/contact-validation.ts`
 - Escape HTML en el correo saliente; errores genéricos al usuario (sin filtrar respuestas de Resend)
 
+## Google Search Console y Analytics
+
+El sitio ya incluye SEO técnico (canonical, Open Graph, Twitter, `robots.txt`, sitemap y schema JSON-LD). Para conectar Google:
+
+### Variables en Cloudflare Pages
+
+| Variable | Tipo | Uso |
+| --- | --- | --- |
+| `PUBLIC_GOOGLE_SITE_VERIFICATION` | Text | Código del meta tag de verificación de Search Console |
+
+Tras guardar variables, haz **Retry deployment** en el último build de `main`.
+
+### Google Analytics 4
+
+El ID de medición está en `src/data/seo.ts` (`gaMeasurementId`). El tag gtag se inyecta en todas las páginas vía `BaseLayout.astro`. Tras cambiar el ID, haz push y deploy.
+
+Comprueba en GA4 → **Tiempo real** tras publicar.
+
+### Search Console
+
+1. [Google Search Console](https://search.google.com/search-console) → **Agregar propiedad** → URL prefijo `https://mecanicaseriols.com`
+2. Método **Etiqueta HTML**: copia solo el valor del `content` (no el meta completo).
+3. Pégalo en `PUBLIC_GOOGLE_SITE_VERIFICATION` en Cloudflare y redeploy.
+4. Verifica en Search Console.
+5. **Sitemaps** → enviar `https://mecanicaseriols.com/sitemap-index.xml` (ya referenciado en `robots.txt`).
+6. En GA4 → **Administrar** → enlaza la propiedad con Search Console (informes de consultas).
+
+### Schema ya publicado
+
+- **AutoRepair** (`LocalBusiness`) en todas las páginas vía `BaseLayout`
+- **WebSite** en la home
+- **FAQPage** en la home (`FaqSection`)
+
+Validar en [Rich Results Test](https://search.google.com/test/rich-results) con la URL de producción.
+
 ## Nota sobre el 404
 
 Si el build apuntaba a `dist/` pero Astro generaba en `dist/client/` (adaptador Workers), Cloudflare devolvía **404 text/plain**.  
