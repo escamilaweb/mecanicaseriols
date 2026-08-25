@@ -1,11 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { navHref, site } from '../data/site';
+import { site } from '../data/site';
 import { privacy, privacyMailto, privacyPageUrl } from '../data/privacy';
 
-const base = import.meta.env.BASE_URL;
 const phoneHref = `tel:${site.phone.replace(/\s/g, '')}`;
-const contactHref = navHref('/contacto', base);
 const headingClass =
   'scroll-mt-28 border-l-2 border-seriols-red pl-4 text-xl font-bold tracking-tight text-body-text sm:scroll-mt-32';
 const bodyClass = 'mt-4 text-sm leading-relaxed text-body-text';
@@ -37,7 +35,7 @@ const bodyClass = 'mt-4 text-sm leading-relaxed text-body-text';
   </section>
 
   <section class="bg-seriols-light py-14 sm:py-16">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:max-w-none lg:px-8">
       <article class="rounded-2xl border border-seriols-gray-300/50 bg-white p-6 shadow-sm sm:p-10">
         <nav aria-label="Secciones del aviso" class="mb-8 border-b border-seriols-gray-300/40 pb-6">
           <p class="mb-3 font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">Contenido</p>
@@ -127,38 +125,37 @@ const bodyClass = 'mt-4 text-sm leading-relaxed text-body-text';
           </p>
           <p class={bodyClass}>
             Para el ejercicio de cualquiera de los derechos ARCO, usted deberá presentar la solicitud respectiva a
-            través del correo
+            través del siguiente medio:{' '}
             <a href={privacyMailto} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
               {site.email}
-            </a>.
+            </a>
           </p>
           <p class={bodyClass}>
             Para conocer el procedimiento y requisitos para el ejercicio de los derechos ARCO, ponemos a su disposición
-            este aviso en
-            <a href={privacyPageUrl} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
-              {privacyPageUrl}
+            el siguiente medio:{' '}
+            <a href={site.url} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
+              {site.url}/
             </a>
-            y la página de
-            <a href={contactHref} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">contacto</a>.
           </p>
 
           <div class="mt-6 rounded-2xl border border-seriols-gray-300/50 bg-seriols-light p-5 sm:p-6">
-            <p class="mb-4 font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">
-              Departamento de datos personales
+            <p class="text-sm leading-relaxed text-body-text">
+              Los datos de contacto de la persona o departamento de datos personales, que está a cargo de dar trámite a
+              las solicitudes de derechos ARCO, son los siguientes:
             </p>
-            <dl class="space-y-3 text-sm">
+            <dl class="mt-4 space-y-3 text-sm">
               <div>
-                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">Nombre</dt>
+                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">
+                  a) Nombre de la persona o departamento de datos personales
+                </dt>
                 <dd class="mt-1 font-semibold text-body-text">{privacy.arcoDepartment}</dd>
               </div>
               <div>
-                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">Domicilio fiscal</dt>
-                <dd class="mt-1 text-body-text">
-                  {privacy.fiscalAddress}, {privacy.region}, país {privacy.country}
-                </dd>
+                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">b) Domicilio fiscal</dt>
+                <dd class="mt-1 text-body-text">{privacy.arcoFiscalAddress}</dd>
               </div>
               <div>
-                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">Correo electrónico</dt>
+                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">c) Correo electrónico</dt>
                 <dd class="mt-1">
                   <a href={privacyMailto} class="font-semibold text-body-text transition hover:text-seriols-red">
                     {site.email}
@@ -166,7 +163,7 @@ const bodyClass = 'mt-4 text-sm leading-relaxed text-body-text';
                 </dd>
               </div>
               <div>
-                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">Teléfono</dt>
+                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">d) Número telefónico</dt>
                 <dd class="mt-1">
                   <a href={phoneHref} class="font-semibold text-body-text transition hover:text-seriols-red">
                     {site.phone}
@@ -188,10 +185,18 @@ const bodyClass = 'mt-4 text-sm leading-relaxed text-body-text';
             servicio que nos solicitó, o la conclusión de su relación con nosotros.
           </p>
           <p class={bodyClass}>
-            Para revocar su consentimiento deberá presentar su solicitud a
+            Para revocar su consentimiento deberá presentar su solicitud a través del siguiente medio:
+          </p>
+          <p class={bodyClass}>
+            En la siguiente dirección electrónica{' '}
             <a href={privacyMailto} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
               {site.email}
-            </a>, indicando los motivos por los que ha tomado esta decisión.
+            </a>{' '}
+            favor de indicar los motivos por los que ha tomado esta decisión.
+          </p>
+          <p class={bodyClass}>
+            Para conocer el procedimiento y requisitos para la revocación del consentimiento, ponemos a su disposición
+            el siguiente medio:
           </p>
           <p class={bodyClass}>
             Una vez recibida su solicitud, le entregaremos por el mismo medio la información con la responsiva del no
@@ -202,11 +207,17 @@ const bodyClass = 'mt-4 text-sm leading-relaxed text-body-text';
         <section class="mt-10" id="limitacion">
           <h2 class={headingClass}>¿Cómo puede limitar el uso o divulgación de su información personal?</h2>
           <p class={bodyClass}>
-            Usted podrá limitar el uso o divulgación de sus datos personales enviando su solicitud a
+            Con objeto de que usted pueda limitar el uso y divulgación de su información personal, le ofrecemos los
+            siguientes medios:
+          </p>
+          <p class={bodyClass}>
+            Usted podrá limitar el uso o divulgación de sus datos personales enviando su solicitud a la dirección
+            electrónica{' '}
             <a href={privacyMailto} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
               {site.email}
-            </a>. En dicha solicitud se indicarán los requisitos para acreditar su identidad, así como el procedimiento
-            para atenderla.
+            </a>
+            . Los requisitos para acreditar su identidad, así como el procedimiento para atender su solicitud, se
+            indicarán al recibirla.
           </p>
         </section>
 
@@ -219,17 +230,27 @@ const bodyClass = 'mt-4 text-sm leading-relaxed text-body-text';
           </p>
           <p class={bodyClass}>
             Nos comprometemos a mantenerlo informado sobre los cambios que pueda sufrir el presente aviso de
-            privacidad. Usted podrá verificar en nuestro sitio web los cambios y actualizaciones en
+            privacidad, a través de:{' '}
             <a href={privacyPageUrl} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
               {privacyPageUrl}
-            </a>.
+            </a>{' '}
+            usted podrá verificar en nuestro sitio web los cambios y actualizaciones de nuestro aviso de privacidad.
           </p>
           <p class={bodyClass}>
-            En esa misma sección se le informará que nuestro aviso de privacidad ha sido modificado, o podrá
-            solicitarlo directamente en
+            El procedimiento a través del cual se llevarán a cabo las notificaciones sobre cambios o actualizaciones al
+            presente aviso de privacidad es el siguiente:
+          </p>
+          <p class={bodyClass}>
+            En la sección{' '}
+            <a href={privacyPageUrl} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
+              {privacyPageUrl}
+            </a>{' '}
+            de nuestro sitio web se le informará que nuestro aviso de privacidad ha sido modificado, o podrá
+            solicitarlo directamente en la siguiente dirección electrónica{' '}
             <a href={privacyMailto} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
               {site.email}
-            </a>.
+            </a>
+            .
           </p>
         </section>
 

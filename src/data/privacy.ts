@@ -5,6 +5,8 @@ export const privacy = {
   tradeName: 'MECÁNICA SERIOLS',
   fiscalAddress: 'calle Tlatlaya 13A 54700 Centro Urbano, 54700 Cuautitlán Izcalli',
   commercialAddress: 'Tlatlaya 9, Centro Urbano, Cuautitlán Izcalli 54700 Estado de México',
+  arcoFiscalAddress:
+    'calle Tlatlaya 13A Centro Urbano, 54700 Cuautitlán Izcalli, Estado de México, en la entidad de Estado de México, país México',
   region: 'Estado de México',
   country: 'México',
   lastUpdated: '20/06/2026',
@@ -19,7 +21,7 @@ export const privacy = {
     { id: 'cambios', label: 'Actualizaciones' },
   ],
   secondaryPurposes: [
-    'Los fines por los que se requiere la información personal es para indicar que en este acto usted, de manera voluntaria consiente a MECÁNICA SERIOLS el trato de su información personal.',
+    'Los fines por los que se requiere la información personal es para indicar que en este acto usted, de manera voluntaria, consiente a MECÁNICA SERIOLS el trato de su información personal.',
     'De celebrar algún servicio de mecánica automotriz con MECÁNICA SERIOLS y para efecto de cumplir con todas las obligaciones que de ahí se desprenden.',
     'Persona física o persona moral que recaba y conserva los datos personales como titular, para procesar su alta como cliente, proveedor, o cualquier tipo de relación comercial.',
     'Para celebrar algún convenio de confidencialidad o contrato por prestación de servicios con MECÁNICA SERIOLS.',

@@ -133,7 +133,7 @@ export const home = {
       'JAC', 'Jeep', 'JMC', 'Kia', 'Land Rover', 'Lexus', 'Lincoln', 'Lotus',
       'Mazda', 'Mercedes-Benz', 'MG Motor', 'Mini', 'Mitsubishi', 'Nissan', 'Omoda',
       'Peugeot', 'RAM', 'Renault', 'SEAT', 'Subaru', 'Suzuki', 'Toyota', 'Volkswagen',
-      'Volvo', 'Freightliner', 'Kenworth', 'VW Camiones', 'Mercedes-Benz Autobuses', 'Volvo Trucks',
+      'Volvo', 'Freightliner', 'Kenworth', 'Mercedes-Benz Autobuses', 'Volvo Trucks',
     ],
     fallback: '¿No encuentras la marca de tu vehículo? Contáctanos y uno de nuestros asesores te ayudará a confirmar la atención para tu unidad.',
   },

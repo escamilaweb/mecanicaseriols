@@ -4,7 +4,7 @@ export const gallerySections = {
   catalog: {
     alt: 'Diagnóstico y reparación automotriz en Mecánica Seriols',
     images: [
-      `${base}/gallery-seriols (12).webp`,
+      `${base}/gallery-seriols-mx5.webp`,
       `${base}/gallery-seriols (4).webp`,
       `${base}/gallery-seriols (55).webp`,
     ],
