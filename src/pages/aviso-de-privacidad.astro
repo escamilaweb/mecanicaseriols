@@ -21,11 +21,11 @@ const bodyClass = 'mt-4 text-sm leading-relaxed text-body-text';
       <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-seriols-red/70 to-transparent"></div>
       <div class="legal-checkered legal-checkered--red absolute -right-16 top-10 h-28 w-[48%] rotate-[-8deg] opacity-[0.12] sm:h-36"></div>
       <div class="legal-checkered legal-checkered--mono absolute -left-12 bottom-6 h-20 w-[38%] rotate-[6deg] opacity-[0.07] sm:h-24"></div>
-      <div class="absolute left-0 top-1/3 h-px w-1/3 bg-gradient-to-r from-seriols-red/40 to-transparent"></div>
     </div>
 
     <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <p class="mb-2 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-seriols-red">Información legal</p>
+      <div class="h-px w-1/3 max-w-xs bg-gradient-to-r from-seriols-red/70 to-transparent" aria-hidden="true"></div>
+      <p class="mt-5 mb-2 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-seriols-red">Información legal</p>
       <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Aviso de privacidad</h1>
       <p class="mt-4 max-w-2xl text-sm leading-relaxed text-seriols-gray-300 sm:text-base">
         {privacy.legalName}, mejor conocido como {privacy.tradeName}, es el responsable del uso y protección de sus
@@ -35,8 +35,8 @@ const bodyClass = 'mt-4 text-sm leading-relaxed text-body-text';
   </section>
 
   <section class="bg-seriols-light py-14 sm:py-16">
-    <div class="mx-auto w-full px-4 sm:px-6 lg:w-[80%] lg:max-w-none lg:px-8">
-      <article class="rounded-2xl border border-seriols-gray-300/50 bg-white p-6 shadow-sm sm:p-10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <article class="mx-auto w-full rounded-2xl border border-seriols-gray-300/50 bg-white p-6 shadow-sm sm:p-10 lg:w-4/5">
         <nav aria-label="Secciones del aviso" class="mb-8 border-b border-seriols-gray-300/40 pb-6">
           <p class="mb-3 font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">Contenido</p>
           <ul class="flex flex-wrap gap-2">
