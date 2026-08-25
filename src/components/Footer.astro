@@ -1,4 +1,5 @@
 ---
+import { privacy } from '../data/privacy';
 import { navHref, navLinks, site } from '../data/site';
 import SocialLinks from './SocialLinks.astro';
 
@@ -61,18 +62,26 @@ const base = import.meta.env.BASE_URL;
   </div>
 
   <div class="border-t border-seriols-gray-300/40 py-4">
-    <p class="text-center text-xs text-seriols-gray-900">
-      &copy; <span data-footer-year></span> {site.name}. Todos los derechos reservados.
-      <span class="mx-2 text-seriols-gray-300">|</span>
-      by{' '}
-      <a
-        href="https://cbrand.mx/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="font-medium text-body-text transition hover:text-seriols-red"
-      >
-        cBrandMX
+    <p class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4 text-center text-xs text-seriols-gray-900">
+      <span>
+        &copy; <span data-footer-year></span> {site.name}. Todos los derechos reservados.
+      </span>
+      <span class="text-seriols-gray-300" aria-hidden="true">|</span>
+      <a href={navHref(privacy.path, base)} class="font-medium text-body-text transition hover:text-seriols-red">
+        Aviso de privacidad
       </a>
+      <span class="text-seriols-gray-300" aria-hidden="true">|</span>
+      <span>
+        by{' '}
+        <a
+          href="https://cbrand.mx/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-medium text-body-text transition hover:text-seriols-red"
+        >
+          cBrandMX
+        </a>
+      </span>
     </p>
   </div>
 </footer>

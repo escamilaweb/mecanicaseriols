@@ -1,0 +1,281 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { navHref, site } from '../data/site';
+import { privacy, privacyMailto, privacyPageUrl } from '../data/privacy';
+
+const base = import.meta.env.BASE_URL;
+const phoneHref = `tel:${site.phone.replace(/\s/g, '')}`;
+const contactHref = navHref('/contacto', base);
+const headingClass =
+  'scroll-mt-28 border-l-2 border-seriols-red pl-4 text-xl font-bold tracking-tight text-body-text sm:scroll-mt-32';
+const bodyClass = 'mt-4 text-sm leading-relaxed text-body-text';
+---
+
+<BaseLayout
+  title="Aviso de privacidad | Mecánica Seriols"
+  description="Aviso de privacidad de Mecánica Seriols. Conoce el tratamiento de tus datos personales, derechos ARCO y los medios para ejercerlos."
+  headerVariant="hero"
+>
+  <section class="legal-banner relative overflow-hidden border-b border-white/10 bg-seriols-dark">
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(226,7,7,0.12),transparent_45%)]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_10%_90%,rgba(255,255,255,0.04),transparent_40%)]"></div>
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-seriols-red/70 to-transparent"></div>
+      <div class="legal-checkered legal-checkered--red absolute -right-16 top-10 h-28 w-[48%] rotate-[-8deg] opacity-[0.12] sm:h-36"></div>
+      <div class="legal-checkered legal-checkered--mono absolute -left-12 bottom-6 h-20 w-[38%] rotate-[6deg] opacity-[0.07] sm:h-24"></div>
+      <div class="absolute left-0 top-1/3 h-px w-1/3 bg-gradient-to-r from-seriols-red/40 to-transparent"></div>
+    </div>
+
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p class="mb-2 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-seriols-red">Información legal</p>
+      <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Aviso de privacidad</h1>
+      <p class="mt-4 max-w-2xl text-sm leading-relaxed text-seriols-gray-300 sm:text-base">
+        {privacy.legalName}, mejor conocido como {privacy.tradeName}, es el responsable del uso y protección de sus
+        datos personales.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-seriols-light py-14 sm:py-16">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <article class="rounded-2xl border border-seriols-gray-300/50 bg-white p-6 shadow-sm sm:p-10">
+        <nav aria-label="Secciones del aviso" class="mb-8 border-b border-seriols-gray-300/40 pb-6">
+          <p class="mb-3 font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">Contenido</p>
+          <ul class="flex flex-wrap gap-2">
+            {
+              privacy.sections.map(({ id, label }) => (
+                <li>
+                  <a
+                    href={`#${id}`}
+                    class="inline-flex rounded-full border border-seriols-gray-300/70 bg-seriols-light px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-body-text transition hover:border-seriols-red/40 hover:text-seriols-red"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+
+        <p class={bodyClass}>
+          <strong>{privacy.legalName}</strong>, mejor conocido como <strong>{privacy.tradeName}</strong>, con domicilio
+          fiscal en {privacy.fiscalAddress}, con domicilio comercial en {privacy.commercialAddress}, en la entidad de
+          {privacy.region}, país {privacy.country}, y portal de internet
+          <a href={site.url} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">{site.url}/</a>
+          es el responsable del uso y protección de sus datos personales, y al respecto le informamos lo siguiente:
+        </p>
+
+        <section class="mt-10" id="fines">
+          <h2 class={headingClass}>¿Para qué fines utilizaremos sus datos personales?</h2>
+          <p class={bodyClass}>
+            De manera adicional, utilizaremos su información personal para las siguientes finalidades secundarias que no
+            son necesarias para el servicio solicitado, pero que nos permiten y facilitan brindarle una mejor atención:
+          </p>
+          <ul class="mt-4 space-y-3 border-l border-seriols-gray-300/50 pl-5">
+            {
+              privacy.secondaryPurposes.map((item) => (
+                <li class="text-sm leading-relaxed text-body-text">{item}</li>
+              ))
+            }
+          </ul>
+          <p class={bodyClass}>
+            En caso de que no desee que sus datos personales sean tratados para estos fines secundarios, desde este
+            momento usted nos puede comunicar lo anterior a través del correo
+            <a href={privacyMailto} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
+              {site.email}
+            </a>.
+          </p>
+          <p class={bodyClass}>
+            Los datos que se le recaban en este acto permanecerán en posesión de {privacy.tradeName} durante todo el
+            tiempo que permanezca la relación comercial con usted como cliente, proveedor o colaborador de
+            {privacy.tradeName} y, aún, hasta 3 años siguientes a la terminación de la misma por cualquier causa. Una
+            vez concluido ese periodo, sus datos serán bloqueados y suprimidos sin que {privacy.tradeName} conserve
+            copia o registro de los mismos. Durante ese tiempo usted puede pedir a {privacy.tradeName}, mediante el
+            envío de un correo electrónico a
+            <a href={privacyMailto} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
+              {site.email}
+            </a>, el tener acceso y/o rectificar, cancelar u oponerse al tratamiento que se les da a los mismos,
+            mediante solicitud respecto de las cuales {privacy.tradeName} se obliga a responder en los términos de la
+            Ley Federal de Protección de Datos Personales en Posesión de los Particulares. {privacy.tradeName} dará
+            respuesta a sus solicitudes, siempre y cuando no se actualice alguna de las excepciones contenidas en la
+            Ley, y el solicitante cumpla con los requisitos contenidos en el artículo 29 de la Ley.
+          </p>
+          <p class={bodyClass}>
+            La negativa para el uso de sus datos personales para estas finalidades no podrá ser un motivo para que le
+            neguemos los servicios y productos que solicita o contrata con nosotros.
+          </p>
+        </section>
+
+        <section class="mt-10" id="datos">
+          <h2 class={headingClass}>¿Qué datos personales utilizaremos para estos fines?</h2>
+          <p class={bodyClass}>
+            Para llevar a cabo las finalidades descritas en el presente aviso de privacidad, utilizaremos los siguientes
+            datos personales, o fiscales para la facturación:
+          </p>
+          <p class={`${bodyClass} rounded-xl bg-seriols-light px-4 py-3`}>{privacy.personalData}</p>
+        </section>
+
+        <section class="mt-10" id="arco">
+          <h2 class={headingClass}>¿Cómo puede acceder, rectificar o cancelar sus datos personales, u oponerse a su uso?</h2>
+          <p class={bodyClass}>
+            Usted tiene derecho a conocer qué datos personales tenemos de usted, para qué los utilizamos y las
+            condiciones del uso que les damos (Acceso). Asimismo, es su derecho solicitar la corrección de su
+            información personal en caso de que esté desactualizada, sea inexacta o incompleta (Rectificación); que la
+            eliminemos de nuestros registros o bases de datos cuando considere que la misma no está siendo utilizada
+            adecuadamente (Cancelación); así como oponerse al uso de sus datos personales para fines específicos
+            (Oposición). Estos derechos se conocen como derechos ARCO.
+          </p>
+          <p class={bodyClass}>
+            Para el ejercicio de cualquiera de los derechos ARCO, usted deberá presentar la solicitud respectiva a
+            través del correo
+            <a href={privacyMailto} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
+              {site.email}
+            </a>.
+          </p>
+          <p class={bodyClass}>
+            Para conocer el procedimiento y requisitos para el ejercicio de los derechos ARCO, ponemos a su disposición
+            este aviso en
+            <a href={privacyPageUrl} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
+              {privacyPageUrl}
+            </a>
+            y la página de
+            <a href={contactHref} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">contacto</a>.
+          </p>
+
+          <div class="mt-6 rounded-2xl border border-seriols-gray-300/50 bg-seriols-light p-5 sm:p-6">
+            <p class="mb-4 font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">
+              Departamento de datos personales
+            </p>
+            <dl class="space-y-3 text-sm">
+              <div>
+                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">Nombre</dt>
+                <dd class="mt-1 font-semibold text-body-text">{privacy.arcoDepartment}</dd>
+              </div>
+              <div>
+                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">Domicilio fiscal</dt>
+                <dd class="mt-1 text-body-text">
+                  {privacy.fiscalAddress}, {privacy.region}, país {privacy.country}
+                </dd>
+              </div>
+              <div>
+                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">Correo electrónico</dt>
+                <dd class="mt-1">
+                  <a href={privacyMailto} class="font-semibold text-body-text transition hover:text-seriols-red">
+                    {site.email}
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt class="font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">Teléfono</dt>
+                <dd class="mt-1">
+                  <a href={phoneHref} class="font-semibold text-body-text transition hover:text-seriols-red">
+                    {site.phone}
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </section>
+
+        <section class="mt-10" id="revocacion">
+          <h2 class={headingClass}>Revocación del consentimiento</h2>
+          <p class={bodyClass}>
+            Usted puede revocar su consentimiento para el uso de sus datos personales que, en su caso, nos haya otorgado
+            para el tratamiento de sus datos personales. Sin embargo, es importante que tenga en cuenta que no en todos
+            los casos podremos atender su solicitud o concluir el uso de forma inmediata, ya que es posible que por
+            alguna obligación legal requiramos seguir tratando sus datos personales. Así mismo, usted deberá considerar
+            que, para ciertos fines, la revocación de su consentimiento implicará que no le podamos seguir prestando el
+            servicio que nos solicitó, o la conclusión de su relación con nosotros.
+          </p>
+          <p class={bodyClass}>
+            Para revocar su consentimiento deberá presentar su solicitud a
+            <a href={privacyMailto} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
+              {site.email}
+            </a>, indicando los motivos por los que ha tomado esta decisión.
+          </p>
+          <p class={bodyClass}>
+            Una vez recibida su solicitud, le entregaremos por el mismo medio la información con la responsiva del no
+            trato de sus datos personales, en un plazo no mayor a 30 días calendario.
+          </p>
+        </section>
+
+        <section class="mt-10" id="limitacion">
+          <h2 class={headingClass}>¿Cómo puede limitar el uso o divulgación de su información personal?</h2>
+          <p class={bodyClass}>
+            Usted podrá limitar el uso o divulgación de sus datos personales enviando su solicitud a
+            <a href={privacyMailto} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
+              {site.email}
+            </a>. En dicha solicitud se indicarán los requisitos para acreditar su identidad, así como el procedimiento
+            para atenderla.
+          </p>
+        </section>
+
+        <section class="mt-10" id="cambios">
+          <h2 class={headingClass}>¿Cómo puede conocer los cambios en este aviso de privacidad?</h2>
+          <p class={bodyClass}>
+            El presente aviso de privacidad puede sufrir modificaciones, cambios o actualizaciones derivadas de nuevos
+            requerimientos legales; de nuestras propias necesidades por los productos o servicios que ofrecemos; de
+            nuestras prácticas de privacidad; de cambios en nuestro modelo de negocio, o por otras causas.
+          </p>
+          <p class={bodyClass}>
+            Nos comprometemos a mantenerlo informado sobre los cambios que pueda sufrir el presente aviso de
+            privacidad. Usted podrá verificar en nuestro sitio web los cambios y actualizaciones en
+            <a href={privacyPageUrl} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
+              {privacyPageUrl}
+            </a>.
+          </p>
+          <p class={bodyClass}>
+            En esa misma sección se le informará que nuestro aviso de privacidad ha sido modificado, o podrá
+            solicitarlo directamente en
+            <a href={privacyMailto} class="font-semibold text-seriols-red transition hover:text-seriols-red-dark">
+              {site.email}
+            </a>.
+          </p>
+        </section>
+
+        <p class="mt-10 border-t border-seriols-gray-300/40 pt-5 font-mono text-[11px] uppercase tracking-wider text-seriols-gray-900">
+          Última actualización: {privacy.lastUpdated}
+        </p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-banner {
+    padding-top: calc(4.5rem + 30px);
+    padding-bottom: 4rem;
+  }
+
+  @media (min-width: 640px) {
+    .legal-banner {
+      padding-top: calc(5rem + 30px);
+      padding-bottom: 5rem;
+    }
+  }
+
+  .legal-checkered {
+    background-size: 16px 16px;
+    mask-image: linear-gradient(to left, black 30%, transparent 95%);
+  }
+
+  .legal-checkered--red {
+    background-color: rgba(226, 7, 7, 0.15);
+    background-image:
+      linear-gradient(45deg, #e20707 25%, transparent 25%, transparent 75%, #e20707 75%, #e20707),
+      linear-gradient(45deg, #e20707 25%, transparent 25%, transparent 75%, #e20707 75%, #e20707);
+    background-position:
+      0 0,
+      8px 8px;
+  }
+
+  .legal-checkered--mono {
+    background-color: rgba(255, 255, 255, 0.02);
+    background-image:
+      linear-gradient(45deg, rgba(255, 255, 255, 0.35) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.35) 75%),
+      linear-gradient(45deg, rgba(255, 255, 255, 0.35) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.35) 75%);
+    background-position:
+      0 0,
+      8px 8px;
+  }
+</style>

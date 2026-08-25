@@ -1,6 +1,10 @@
 ---
+import { privacy } from '../data/privacy';
+import { navHref } from '../data/site';
+
 const labelClass = 'flex flex-col gap-1.5 text-sm font-medium text-body-text';
 const apiUrl = `${import.meta.env.BASE_URL}api/contact/`;
+const privacyHref = navHref(privacy.path, import.meta.env.BASE_URL);
 
 const fields = [
   { name: 'name', label: 'Nombre', type: 'text', autocomplete: 'name', placeholder: 'Tu nombre', cols: 2, maxLength: 120 },
@@ -86,6 +90,13 @@ const fields = [
   }
 
   <p id="contact-form-status" class="hidden text-sm" role="status" aria-live="polite"></p>
+
+  <p class="text-xs leading-relaxed text-seriols-gray-900">
+    Al enviar este formulario aceptas el tratamiento de tus datos conforme al{' '}
+    <a href={privacyHref} class="font-semibold text-body-text underline decoration-seriols-gray-300 underline-offset-2 transition hover:text-seriols-red hover:decoration-seriols-red/40">
+      Aviso de privacidad
+    </a>.
+  </p>
 
   <button
     type="submit"
