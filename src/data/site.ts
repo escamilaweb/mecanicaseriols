@@ -1,16 +1,18 @@
 export const siteLocation = {
-  streetAddress: 'Tlatlaya 13A Centro Urbano',
-  postalCode: '54700',
+  streetAddress: 'Tlatlaya 9, Centro Urbano',
+  postalCode: '54750',
   addressLocality: 'Cuautitlán Izcalli',
   addressRegion: 'Estado de México',
   addressCountry: 'MX',
-  latitude: 19.6542,
-  longitude: -99.2103,
+  latitude: 19.6601,
+  longitude: -99.2098,
 } as const;
 
 export function formatSiteAddress(location: typeof siteLocation = siteLocation) {
-  return `${location.streetAddress}, ${location.postalCode} ${location.addressLocality}, ${location.addressRegion}`;
+  return `${location.streetAddress}, ${location.postalCode} ${location.addressLocality}, Méx.`;
 }
+
+export const mapsProfileUrl = 'https://maps.app.goo.gl/i5eQHZi7pLpDqigj9';
 
 export const site = {
   name: 'Mecánica Seriols',
@@ -37,12 +39,12 @@ export const site = {
   },
 } as const;
 
-export function mapsDirectionsUrl(address: string = site.address) {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+export function mapsDirectionsUrl(_address: string = site.address) {
+  return mapsProfileUrl;
 }
 
-export function mapsPlaceUrl(address: string = site.address) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+export function mapsPlaceUrl(_address: string = site.address) {
+  return mapsProfileUrl;
 }
 
 export function mapsEmbedUrl(address: string = site.address) {

@@ -122,6 +122,30 @@ export const home = {
     ],
   },
 
+  testimonials: {
+    title: 'Lo que opinan en Google',
+    description: 'Opiniones de 5 estrellas publicadas en Google Maps por clientes del taller.',
+    mapsLabel: 'Ver en Google Maps',
+    items: [
+      {
+        name: 'Ricardo',
+        quote: 'Taller de primera. Siempre garantizado el trabajo.',
+      },
+      {
+        name: 'Francisco',
+        quote: 'Excelente atención, calidad en el trabajo y servicio.',
+      },
+      {
+        name: 'Laura',
+        quote: 'Excelente atención, y muy acertado en su diagnóstico.',
+      },
+      {
+        name: 'Ricardo',
+        quote: 'Servicio de primera calidad con profesionalismo y excelencia. 100% recomendable.',
+      },
+    ],
+  },
+
   brands: {
     title: 'Reparación y mantenimiento para vehículos de combustión e híbridos de múltiples marcas',
     description:

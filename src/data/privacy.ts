@@ -4,7 +4,7 @@ export const privacy = {
   legalName: 'IVAN JOSÉ SERIOL LINARES',
   tradeName: 'MECÁNICA SERIOLS',
   fiscalAddress: 'calle Tlatlaya 13A 54700 Centro Urbano, 54700 Cuautitlán Izcalli',
-  commercialAddress: 'Tlatlaya 9, Centro Urbano, Cuautitlán Izcalli 54700 Estado de México',
+  commercialAddress: 'Tlatlaya 9, Centro Urbano, 54750 Cuautitlán Izcalli, Méx.',
   arcoFiscalAddress:
     'calle Tlatlaya 13A Centro Urbano, 54700 Cuautitlán Izcalli, Estado de México, en la entidad de Estado de México, país México',
   region: 'Estado de México',
