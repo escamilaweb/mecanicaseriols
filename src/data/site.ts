@@ -1,6 +1,6 @@
 export const siteLocation = {
   streetAddress: 'Tlatlaya 9, Centro Urbano',
-  postalCode: '54750',
+  postalCode: '54700',
   addressLocality: 'Cuautitlán Izcalli',
   addressRegion: 'Estado de México',
   addressCountry: 'MX',
@@ -12,7 +12,7 @@ export function formatSiteAddress(location: typeof siteLocation = siteLocation) 
   return `${location.streetAddress}, ${location.postalCode} ${location.addressLocality}, Méx.`;
 }
 
-export const mapsProfileUrl = 'https://maps.app.goo.gl/i5eQHZi7pLpDqigj9';
+export const mapsProfileUrl = 'https://maps.app.goo.gl/mKWbGskxKepDKTpc6';
 
 export const site = {
   name: 'Mecánica Seriols',

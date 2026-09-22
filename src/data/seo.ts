@@ -9,7 +9,7 @@ export const seo = {
   ogImageAlt: 'Taller Mecánica Seriols, mecánica automotriz en Cuautitlán Izcalli',
   locale: 'es_MX',
   keywords:
-    'mecánica automotriz, taller mecánico, Cuautitlán Izcalli, Tlatlaya 9, 54750, diagnóstico automotriz, reparación de autos, vehículos híbridos, mantenimiento automotriz, Estado de México',
+    'mecánica automotriz, taller mecánico, Cuautitlán Izcalli, Tlatlaya 9, 54700, diagnóstico automotriz, reparación de autos, vehículos híbridos, mantenimiento automotriz, Estado de México',
   geo: {
     region: 'MX-MEX',
     placename: `${site.location.addressLocality}, ${site.location.addressRegion}`,
