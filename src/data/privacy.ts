@@ -3,10 +3,10 @@ import { site } from './site';
 export const privacy = {
   legalName: 'IVAN JOSÉ SERIOL LINARES',
   tradeName: 'MECÁNICA SERIOLS',
-  fiscalAddress: 'calle Tlatlaya 13A 54700 Centro Urbano, 54700 Cuautitlán Izcalli',
-  commercialAddress: 'Tlatlaya 9, Centro Urbano, 54700 Cuautitlán Izcalli, Méx.',
+  fiscalAddress: 'calle Tlatlaya 13A, Centro Urbano, Cuautitlán Izcalli C.P. 54740',
+  commercialAddress: 'Tlatlaya 9, Centro Urbano, Cuautitlán Izcalli, Méx, C.P 54750',
   arcoFiscalAddress:
-    'calle Tlatlaya 13A Centro Urbano, 54700 Cuautitlán Izcalli, Estado de México, en la entidad de Estado de México, país México',
+    'Calle Tlatlaya 13A Centro Urbano, 54740 Cuautitlán Izcalli, Estado de México, en la entidad de Estado de México, país México',
   region: 'Estado de México',
   country: 'México',
   lastUpdated: '20/06/2026',
