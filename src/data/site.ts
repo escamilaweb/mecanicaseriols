@@ -47,6 +47,11 @@ export function mapsPlaceUrl(_address: string = site.address) {
   return mapsProfileUrl;
 }
 
+export function mapsNavigateUrl() {
+  const { latitude, longitude } = site.location;
+  return `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+}
+
 export function mapsEmbedUrl(_address: string = site.address) {
   const { latitude, longitude } = site.location;
   return `https://maps.google.com/maps?q=${latitude},${longitude}&z=17&output=embed`;

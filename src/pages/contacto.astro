@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactForm from '../components/ContactForm.astro';
-import { mapsDirectionsUrl, mapsEmbedUrl, site } from '../data/site';
+import { mapsDirectionsUrl, mapsEmbedUrl, mapsNavigateUrl, site } from '../data/site';
 
 const base = import.meta.env.BASE_URL;
 const phoneHref = `tel:${site.phone.replace(/\s/g, '')}`;
 const officeHref = `tel:${site.phoneOffice.replace(/\s/g, '')}`;
 const whatsappHref = `https://wa.me/52${site.whatsapp.replace(/\s/g, '')}`;
 const directionsUrl = mapsDirectionsUrl();
+const navigateUrl = mapsNavigateUrl();
 const embedUrl = mapsEmbedUrl();
 
 const eyebrow = 'mb-2 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-seriols-red';
@@ -222,6 +223,17 @@ const contactItems = [
         <div class="border-b border-seriols-gray-300/40 px-6 py-4 sm:px-8">
           <h2 class="text-lg font-bold text-body-text">Ubicación del taller</h2>
           <p class="mt-1 text-sm text-body-text">{site.address}</p>
+          <a
+            href={navigateUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-[#1a73e8] transition hover:text-[#174ea6]"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M21.71 11.29l-9-9a1 1 0 00-1.42 0l-9 9a1 1 0 000 1.42l9 9a1 1 0 001.42 0l9-9a1 1 0 000-1.42zM14 14.5V12h-4v3H8v-4a1 1 0 011-1h5V7.5L17.5 11 14 14.5z" />
+            </svg>
+            Cómo llegar
+          </a>
         </div>
         <div class="relative aspect-[16/9] w-full sm:aspect-[21/9]">
           <iframe
