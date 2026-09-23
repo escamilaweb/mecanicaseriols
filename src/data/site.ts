@@ -4,15 +4,15 @@ export const siteLocation = {
   addressLocality: 'Cuautitlán Izcalli',
   addressRegion: 'Estado de México',
   addressCountry: 'MX',
-  latitude: 19.6601,
-  longitude: -99.2098,
+  latitude: 19.6610448,
+  longitude: -99.2091401,
 } as const;
 
 export function formatSiteAddress(location: typeof siteLocation = siteLocation) {
   return `${location.streetAddress}, ${location.postalCode} ${location.addressLocality}, Méx.`;
 }
 
-export const mapsProfileUrl = 'https://maps.app.goo.gl/BZkCJrLyHFqVT9RV6';
+export const mapsProfileUrl = 'https://maps.app.goo.gl/XFer48GDxphWEQxWA';
 
 export const site = {
   name: 'Mecánica Seriols',
@@ -47,8 +47,9 @@ export function mapsPlaceUrl(_address: string = site.address) {
   return mapsProfileUrl;
 }
 
-export function mapsEmbedUrl(address: string = site.address) {
-  return `https://maps.google.com/maps?q=${encodeURIComponent(address)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+export function mapsEmbedUrl(_address: string = site.address) {
+  const { latitude, longitude } = site.location;
+  return `https://maps.google.com/maps?q=${latitude},${longitude}&z=17&output=embed`;
 }
 
 export const navLinks = [
